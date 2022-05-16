@@ -2,17 +2,21 @@ import React from 'react';
 import {View,Text,Button, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 
+const Main = styled.View`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 const Login = ({navigation}) => {
     return (
-        <View>
+        <Main>
             <Text>로그인</Text>
-            {<View>
                 <TextInput placeholder='ID'/>
-                <TextInput placeholder='PASSWORD'/>
-                <Button title='Login' onPress={() => navigation.navigate('Main')}/>
-                <Button title='SignIn' onPress={() => navigation.navigate('SignIn')}/>
-            </View>}
-        </View>
+                <TextInput placeholder='비밀번호'/>
+                <Button title='로그인' onPress={() => navigation.navigate('Main')}/>
+                <Button title='회원가입' onPress={() => navigation.navigate('SignIn')}/>
+        </Main>
     );
 };
 

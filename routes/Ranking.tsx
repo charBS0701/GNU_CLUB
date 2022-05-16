@@ -2,6 +2,12 @@ import React from 'react';
 import {View,Text, Button} from 'react-native';
 import styled from 'styled-components/native';
 
+const Main = styled.View`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 const Club = styled.Text`
   font-size: 22px;
 `;
@@ -15,7 +21,7 @@ const Inline = styled.View`
 
 const Ranking = ({navigation}) => {
     return (
-        <View>
+        <Main>
             <Inline>
               <Text>1</Text>
               <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
@@ -36,7 +42,7 @@ const Ranking = ({navigation}) => {
               <Club onPress={() => navigation.navigate('Club')}>동아리 4</Club>
               <Text>icon</Text>
             </Inline>
-          </View>
+          </Main>
     );
 };
 

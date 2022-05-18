@@ -15,7 +15,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const Stack = createNativeStackNavigator();
 
 const Root = () => (
-  <Stack.Navigator initialRouteName="Login">
+  <Stack.Navigator
+    screenOptions={{ headerShown: false }}
+    initialRouteName="Login"
+  >
     <Stack.Screen name="Main" component={Main} />
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="SignIn" component={SignIn} />

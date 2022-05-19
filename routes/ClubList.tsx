@@ -63,9 +63,60 @@ const ClubList = ({navigation}) => {
               <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
               <Feather name="bookmark" size={24} color="black" />
             </Inline>
+            <Inline>
+              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
+              <Feather name="bookmark" size={24} color="black" />
+            </Inline>
+            <Inline>
+              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
+              <Feather name="bookmark" size={24} color="black" />
+            </Inline>
+          </ScrollView>
+        </List>
+        <List>
+          <Category>카테고리3</Category>
+          <ScrollView>
+            <Inline>
+              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
+              <Feather name="bookmark" size={24} color="black" />
+            </Inline>
+            <Inline>
+              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
+              <Feather name="bookmark" size={24} color="black" />
+            </Inline>
+            <Inline>
+              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
+              <Feather name="bookmark" size={24} color="black" />
+            </Inline>
+            <Inline>
+              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
+              <Feather name="bookmark" size={24} color="black" />
+            </Inline>
+          </ScrollView>
+        </List>
+        <List>
+          <Category>카테고리4</Category>
+          <ScrollView>
+            <Inline>
+              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
+              <Feather name="bookmark" size={24} color="black" />
+            </Inline>
+            <Inline>
+              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
+              <Feather name="bookmark" size={24} color="black" />
+            </Inline>
+            <Inline>
+              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
+              <Feather name="bookmark" size={24} color="black" />
+            </Inline>
+            <Inline>
+              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
+              <Feather name="bookmark" size={24} color="black" />
+            </Inline>
           </ScrollView>
         </List>
       </ScrollView>
+      
     );
   };
 

@@ -33,7 +33,7 @@ const ClubList = ({navigation}) => {
       <ScrollView>
         <List>
           <Category>카테고리1</Category>
-          <ScrollView>
+          <ScrollView nestedScrollEnabled={true}>
             <Inline>
               <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
               <Feather name="bookmark" size={24} color="black" />
@@ -54,7 +54,7 @@ const ClubList = ({navigation}) => {
         </List>
         <List>
           <Category>카테고리2</Category>
-          <ScrollView>
+          <ScrollView nestedScrollEnabled={true}>
             <Inline>
               <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
               <Feather name="bookmark" size={24} color="black" />
@@ -75,7 +75,7 @@ const ClubList = ({navigation}) => {
         </List>
         <List>
           <Category>카테고리3</Category>
-          <ScrollView>
+          <ScrollView nestedScrollEnabled={true}>
             <Inline>
               <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
               <Feather name="bookmark" size={24} color="black" />
@@ -96,7 +96,7 @@ const ClubList = ({navigation}) => {
         </List>
         <List>
           <Category>카테고리4</Category>
-          <ScrollView>
+          <ScrollView nestedScrollEnabled={true}>
             <Inline>
               <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
               <Feather name="bookmark" size={24} color="black" />

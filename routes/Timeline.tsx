@@ -1,10 +1,23 @@
 import React from 'react';
-import {View,Text} from 'react-native';
+import {Text, ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 
 const Main = styled.View`
     display: flex;
     align-items: center;
+`;
+
+const List = styled.ScrollView`
+    width: 100%;
+    margin-left: 30%;
+`;
+
+const Header = styled.View`
+    width: 75%;
+    margin-top: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 `;
 
 const Posted = styled.View`
@@ -15,21 +28,28 @@ const Posted = styled.View`
 `;
 
 const Posting = styled.Text`
-    position: absolute;
-    display: flex;
-    font-size: 30px;
-`
+    font-size: 40px;
+`;
+
+const GoBack = styled.Text`
+    font-size: 40px;
+`;
 
 const Timeline = ({navigation}) => {
     return (
         <Main>
-            <Posted>
-                <Text onPress={() => navigation.navigate('Watch')}>타임라인1</Text>
-            </Posted>
-            <Posted>
-                <Text onPress={() => navigation.navigate('Watch')}>타임라인2</Text>
-            </Posted>
-            <Posting onPress={() => navigation.navigate('Posting')}>+</Posting>
+            <Header>
+                <GoBack onPress={() => navigation.goBack()}>&lt;</GoBack>
+                <Posting onPress={() => navigation.navigate('Posting')}>+</Posting>
+            </Header>  
+            <List>
+                <Posted>
+                    <Text onPress={() => navigation.navigate('Watch')}>타임라인1</Text>
+                </Posted>
+                <Posted>
+                    <Text onPress={() => navigation.navigate('Watch')}>타임라인2</Text>
+                </Posted>
+            </List>
         </Main>
     );
 };

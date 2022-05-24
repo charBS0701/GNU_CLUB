@@ -16,6 +16,10 @@ const Category = styled.Text`
   font-size: 25px;
 `;
 
+const Render = () => {
+  
+}
+
 const ClubList = ({ navigation }) => {
   const [categoryList, setCategoryList] = useState([]);
   const getCategoryList = async () => {
@@ -30,13 +34,22 @@ const ClubList = ({ navigation }) => {
 
   return (
     <Container>
-      {categoryList.map((category) => (
-        <List>
-          <Category onPress={() => navigation.navigate('ClubCategory')}>
-            {category.categoryName}
-          </Category>
-        </List>
-      ))}
+      {categoryList.map((category) => {
+        return (
+          <List>
+            <Category
+              onPress={() =>
+                navigation.navigate("ClubCategory", {
+                  categoryName: category.categoryName,
+                  categoryPk: category.categoryPk
+                })
+              }
+            >
+              {category.categoryName}
+            </Category>
+          </List>
+        );
+      })}
     </Container>
   );
 };

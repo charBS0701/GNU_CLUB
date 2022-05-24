@@ -1,7 +1,7 @@
-import React from 'react';
-import {ScrollView} from 'react-native';
-import styled from 'styled-components/native';
-import { Feather } from '@expo/vector-icons';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components/native";
+
+const Container = styled.ScrollView``;
 
 const List = styled.View`
   display: flex;
@@ -14,110 +14,30 @@ const List = styled.View`
 const Category = styled.Text`
   margin-left: 5%;
   font-size: 25px;
-
 `;
 
-const Club = styled.Text`
-  font-size: 22px;
-`;
 
-const Inline = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 2% 5%;
-`;
-
-const ClubList = ({navigation}) => {
-    return (
-      <ScrollView>
-        <List>
-          <Category>카테고리1</Category>
-          <ScrollView nestedScrollEnabled={true}>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-          </ScrollView>
-        </List>
-        <List>
-          <Category>카테고리2</Category>
-          <ScrollView nestedScrollEnabled={true}>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-          </ScrollView>
-        </List>
-        <List>
-          <Category>카테고리3</Category>
-          <ScrollView nestedScrollEnabled={true}>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-          </ScrollView>
-        </List>
-        <List>
-          <Category>카테고리4</Category>
-          <ScrollView nestedScrollEnabled={true}>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 1</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-            <Inline>
-              <Club onPress={() => navigation.navigate('Club')}>동아리 2</Club>
-              <Feather name="bookmark" size={24} color="black" />
-            </Inline>
-          </ScrollView>
-        </List>
-      </ScrollView>
-      
-    );
+const ClubList = ({ navigation }) => {
+  const [categoryList, setCategoryList] = useState([]);
+  const getCategoryList = async () => {
+    const response = await fetch(`http://15.165.169.129/api/categories`);
+    const json = await response.json();
+    setCategoryList(json.data);
   };
 
-  export default ClubList;
+  useEffect(() => {
+    getCategoryList();
+  }, []);
+
+  return (
+    <Container>
+      {categoryList.map((category) => (
+        <List>
+          <Category>{category.categoryName}</Category>
+        </List>
+      ))}
+    </Container>
+  );
+};
+
+export default ClubList;

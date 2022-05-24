@@ -9,6 +9,7 @@ import Posting from "./Posting";
 import Login from "./Login";
 import EditInfo from "./EditInfo";
 import Watch from "./Watch";
+import ClubCategory from "./ClubCategory";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -29,6 +30,7 @@ const Root = () => (
     <Stack.Screen name="Posting" component={Posting} />
     <Stack.Screen name="EditInfo" component={EditInfo} />
     <Stack.Screen name="Watch" component={Watch} />
+    <Stack.Screen name="ClubCategory" component={ClubCategory} />
   </Stack.Navigator>
 );
 

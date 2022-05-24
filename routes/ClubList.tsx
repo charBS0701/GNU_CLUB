@@ -16,7 +16,6 @@ const Category = styled.Text`
   font-size: 25px;
 `;
 
-
 const ClubList = ({ navigation }) => {
   const [categoryList, setCategoryList] = useState([]);
   const getCategoryList = async () => {
@@ -33,7 +32,9 @@ const ClubList = ({ navigation }) => {
     <Container>
       {categoryList.map((category) => (
         <List>
-          <Category>{category.categoryName}</Category>
+          <Category onPress={() => navigation.navigate('ClubCategory')}>
+            {category.categoryName}
+          </Category>
         </List>
       ))}
     </Container>

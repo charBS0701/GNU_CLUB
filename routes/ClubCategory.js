@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { View, Text, Button } from "react-native";
 import styled from "styled-components/native";
@@ -40,14 +41,26 @@ const ClubCategory = (props) => {
     getClubList();
   });
 
+  const navigation = useNavigation();
   return (
     <Container>
       <TextLine>{props.route.params.categoryName} 분야 </TextLine>
-      {clubList.map((club) => (
+      {clubList.map((club) => {
+          return (
         <List>
-          <Category>{club.clubName}</Category>
+          <Category
+            onPress={() =>
+              navigation.navigate('Club', {
+                clubName: club.clubName,
+                clubPk: club.clubPk
+              })
+            }
+          >
+            {club.clubName}
+          </Category>
         </List>
-      ))}
+          );
+        })}
     </Container>
   );
 };

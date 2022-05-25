@@ -20,10 +20,10 @@ const Posting = styled.View`
     justify-content: space-between;
     margin: 15% 0;
 `
-const Club = ({navigation}) => {
+const Club = (props, {navigation}) => {
     return (
         <Main>
-            <Title>동아리 이름</Title>
+            <Title>{props.route.params.clubName}</Title>
             <View>
                 <Text>동아리 총 인원 : </Text>
                 <Text>동아리방 현재 인원 : </Text>

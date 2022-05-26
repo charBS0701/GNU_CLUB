@@ -5,26 +5,46 @@ import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UnBookmarked, Bookmarked } from "../components/Bookmark";
 
-const Container = styled.ScrollView``;
-const TextLine = styled.Text`
-  margin-top: 100;
-  margin-left: 50;
-  font-size: 20px;
+const Container = styled.ScrollView`
+  padding-left: 10%;
+  padding-right: 10%;
+`;
+const CategoryNameContainer = styled.View`
+  display: flex;
   justify-content: center;
   align-items: center;
+`;
+const CategoryName = styled.Text`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100;
+  font-size: 30px;
+  color: black;
+  background-color: #9a9a9a;
+  padding: 0px 10px 0px 10px;
 `;
 
 const List = styled.View`
   display: flex;
-  justify-content: center;
-  border: 3px solid black;
-  margin: 5% 10%;
+  border: 3px;
+  border-color: #9a9a9a;
   max-height: 180px;
 `;
 
+const CategoryContainer = styled.View`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ced1ce;
+  height: 50px;
+  justify-content: center;
+`;
+
 const Category = styled.Text`
-  margin-left: 5%;
+  margin-left: 10%;
   font-size: 25px;
+  color: #4b4b4b;
 `;
 
 const ClubCategory = (props) => {
@@ -59,9 +79,7 @@ const ClubCategory = (props) => {
     var thisFeather = "";
     member.bookmarks.includes(thisPk)
       ? (thisFeather = <Bookmarked />)
-      : (thisFeather = (
-          <UnBookmarked />
-        ));
+      : (thisFeather = <UnBookmarked />);
 
     return <View>{thisFeather}</View>;
   };
@@ -92,19 +110,23 @@ const ClubCategory = (props) => {
 
   return (
     <Container>
-      <TextLine>{props.route.params.categoryName} 분야 </TextLine>
+      <CategoryNameContainer>
+        <CategoryName>{props.route.params.categoryName} 분야 </CategoryName>
+      </CategoryNameContainer>
       {clubList.map((club, key) => {
         return (
           <List key={key}>
-            <Category>
-              <TouchableOpacity onPress={() => nav("Club", club.clubPk)}>
-                <Text style={{ fontSize: 24 }}>{club.clubName}</Text>
-              </TouchableOpacity>
+            <CategoryContainer>
+              <Category>
+                <TouchableOpacity onPress={() => nav("Club", club.clubPk)}>
+                  <Text style={{ fontSize: 24 }}>{club.clubName}</Text>
+                </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => clickBookMark(club.clubPk)}>
-                {checkFeather(club.clubPk)}
-              </TouchableOpacity>
-            </Category>
+                <TouchableOpacity onPress={() => clickBookMark(club.clubPk)}>
+                  {checkFeather(club.clubPk)}
+                </TouchableOpacity>
+              </Category>
+            </CategoryContainer>
           </List>
         );
       })}

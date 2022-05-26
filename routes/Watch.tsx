@@ -47,7 +47,7 @@ const Like = styled.View`
     
 `;
 
-const Watch = (noticePk:number) => {
+const Watch = (noticePk) => {
     const [like,setLike] = useState(false);
     const [notice,setNotice] = useState<any>();
     const callApi = async() => {

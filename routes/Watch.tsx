@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {View,Text,Image, Button, TextInput} from 'react-native';
 import styled from 'styled-components/native';
+import axios from "axios";
 import { AntDesign } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
 
@@ -42,16 +43,39 @@ const Comment = styled.View`
     margin-bottom: 10%;
 `;
 
-const Watch = () => {
+const Like = styled.View`
+    
+`;
+
+const Watch = (noticePk:number) => {
+    const [like,setLike] = useState(false);
+    const [notice,setNotice] = useState<any>();
+    const callApi = async() => {
+        try{
+            const response = await axios.get(`http://15.165.169.129/api/club/notice/${noticePk.route.params.noticePk}?member_pk=1`);
+            setNotice(response.data.data);
+            setTimeout(()=>'',1000);
+            console.log(notice);
+            }catch(error){
+                console.log(error);
+            };
+    }
+    useEffect(() => {callApi()},[]);
     return (
         <View>
-            <Title>Title</Title>
-            <Time>2022-00-00 00:00</Time>
-            <Detail>asdfasdf</Detail>
-            <Image source={{uri:''}}/>
+            <Title>{notice.title}</Title>
+            <Time>{notice.postingTime}</Time>
+            <Detail>{notice.content}</Detail>
+            <Image source={{uri:`${notice.imageUrl}`}}/>
             <Counting>
-                <AntDesign name="hearto" size={24} color="black" />
-                <Text> like count </Text>
+                <Like onPress={() => setLike(true)}>
+                    {(like) ? (
+                    <AntDesign name="heart" size={24} color="black" />
+                    ) : (
+                    <AntDesign name="hearto" size={24} color="black" />
+                    )}
+                </Like>
+                <Text> {notice.likeCount} </Text>
                 <EvilIcons name="comment" size={24} color="black" />
                 <Text> comment count </Text>
             </Counting>

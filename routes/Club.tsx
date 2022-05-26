@@ -1,11 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import {View,Text, Button} from 'react-native';
+import {View,Text, Image, Button} from 'react-native';
 import styled from 'styled-components/native';
 import Loader from '../components/Loader';
+import { Fontisto } from '@expo/vector-icons';
+import { CheckedBox, UncheckedBox } from '../components/Icon';
 
+
+const Container = styled.View`
+    display: flex;
+    fles-direction: row;
+    flex: 1;
+    alignItems: center;
+    padding-top: 15%;
+`;
+
+const ClubImage = styled.Image`
+    width: 90%;
+    height: 35%;
+`;
 const Title = styled.Text`
     font-size: 30px;
-    margin: 10%;
+    margin: 5%;
+`;
+
+const Content = styled.View`
+display: flex;
+flex-direction: row;
+width: 100%;
+padding: 3% 5% 0% 5%;
+justify-content: space-between;
 `;
 
 const Posting = styled.View`
@@ -52,19 +75,24 @@ const Club = (props) => {
     }
 
     return  loading ? <Loader /> : (
-        <View style={{display: "flex", alignItems: "center"}}>
+        <Container>
+            {/* 동아리 사진 삽입 */}
+            {/* 더미 이미지 */}
+            <ClubImage source={require("../assets/freeImages.png")} />
+            <Content>
             <Title>{clubData.data.clubName}</Title>
             <View>
                 <Text>동아리 총 인원 : {clubData.data.totalMemberCnt}</Text>
                 <Text>동아리방 현재 인원 : {clubData.data.currentMemberCnt}</Text>
-                <Text>체크박스 추가</Text>
+                <UncheckedBox />
             </View>
+            </Content>
             <Posting>
                 <Button title='공지사항' onPress={() => nav('Notice')}/>
                 <Button title='타임라인' onPress={() => nav('Timeline')}/>
             </Posting>
             <Text>동아리 소개</Text>
-        </View>
+        </Container>
     );
 };
 

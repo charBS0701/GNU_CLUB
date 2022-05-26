@@ -1,29 +1,29 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
+import { Text, View } from "react-native";
 
 const Container = styled.ScrollView`
-  padding-top: 5%
-  `;
+  padding-top: 5%;
+`;
 
 const List = styled.View`
   display: flex;
   justify-content: center;
   border: 3px;
   border-color: #9a9a9a;
-  margin: 5% 10%;
-  max-height: 180px;
+  margin: 2% 10%;
 `;
 
 const CategoryContainer = styled.View`
-  background-color: #CED1CE;
+  background-color: #ced1ce;
   height: 50px;
   justify-content: center;
 `;
 const Category = styled.Text`
   margin-left: 5%;
   font-size: 25px;
-  color: #4B4B4B;
+  color: #4b4b4b;
 `;
 
 const ClubList = ({ navigation }) => {
@@ -81,6 +81,7 @@ const ClubList = ({ navigation }) => {
           </List>
         );
       })}
+
     </Container>
   );
 };

@@ -3,48 +3,41 @@ import { TouchableOpacity, View, Text } from "react-native";
 import styled from "styled-components/native";
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { UnBookmarked, Bookmarked } from "../components/Bookmark";
+import { UnBookmarked, Bookmarked } from "../components/Icon";
 
 const Container = styled.ScrollView`
+  flex: 1;
+  padding-top: 20%;
   padding-left: 10%;
   padding-right: 10%;
 `;
 const CategoryNameContainer = styled.View`
-  display: flex;
-  justify-content: center;
+  width: 100%;
+  background-color: #9a9a9a;
   align-items: center;
 `;
 const CategoryName = styled.Text`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 100;
   font-size: 30px;
-  color: black;
-  background-color: #9a9a9a;
-  padding: 0px 10px 0px 10px;
 `;
 
 const List = styled.View`
-  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   border: 3px;
   border-color: #9a9a9a;
-  max-height: 180px;
-`;
-
-const CategoryContainer = styled.View`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  border-collapse: collapse;
   background-color: #ced1ce;
-  height: 50px;
-  justify-content: center;
+  padding: 5px 13px 5px 11px;
 `;
 
-const Category = styled.Text`
-  margin-left: 10%;
+const ClubName = styled.TouchableOpacity``;
+const ClubNameText = styled.Text`
   font-size: 25px;
   color: #4b4b4b;
+`;
+const Bookmark = styled.TouchableOpacity`
+  // flex: 1;
 `;
 
 const ClubCategory = (props) => {
@@ -116,20 +109,47 @@ const ClubCategory = (props) => {
       {clubList.map((club, key) => {
         return (
           <List key={key}>
-            <CategoryContainer>
-              <Category>
-                <TouchableOpacity onPress={() => nav("Club", club.clubPk)}>
-                  <Text style={{ fontSize: 24 }}>{club.clubName}</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => clickBookMark(club.clubPk)}>
-                  {checkFeather(club.clubPk)}
-                </TouchableOpacity>
-              </Category>
-            </CategoryContainer>
+            <ClubName onPress={() => nav("Club", club.clubPk)}>
+              <ClubNameText>{club.clubName}</ClubNameText>
+            </ClubName>
+            <TouchableOpacity onPress={() => clickBookMark(club.clubPk)}>
+              {checkFeather(club.clubPk)}
+            </TouchableOpacity>
           </List>
         );
       })}
+      <List>
+        <ClubName>
+            <ClubNameText>더미데이터1</ClubNameText>
+        </ClubName>
+        <Bookmark>
+          <UnBookmarked />
+        </Bookmark>
+      </List>
+      <List>
+        <ClubName>
+            <ClubNameText>더미데이터2</ClubNameText>
+        </ClubName>
+        <Bookmark>
+          <UnBookmarked />
+        </Bookmark>
+      </List>
+      <List>
+        <ClubName>
+            <ClubNameText>더미데이터3</ClubNameText>
+        </ClubName>
+        <Bookmark>
+          <UnBookmarked />
+        </Bookmark>
+      </List>
+      <List>
+        <ClubName>
+            <ClubNameText>더미데이터4</ClubNameText>
+        </ClubName>
+        <Bookmark>
+          <UnBookmarked />
+        </Bookmark>
+      </List>
     </Container>
   );
 };

@@ -3,7 +3,6 @@ import {View,Text,Image, Button, TextInput, ActivityIndicator} from 'react-nativ
 import styled from 'styled-components/native';
 import axios from "axios";
 import { AntDesign } from '@expo/vector-icons';
-import { EvilIcons } from '@expo/vector-icons';
 
 const Title = styled.Text`
     margin-top: 15%;
@@ -44,14 +43,16 @@ const Comment = styled.View`
     margin-bottom: 10%;
 `;
 
-const Like = styled.View`
-    
+const Like = styled.TouchableOpacity`
+    display: flex;
+    justify-content: center;
 `;
 
 const Watch = (noticePk:any) => {
-    const [like,setLike] = useState(false);
+    let content:String;
     const [notice,setNotice] = useState<any>();
     const [loading,setLoading] = useState(true);
+    const [like,setLike] = useState(false);
     const callApi = async() => {
         try{
             const response = await axios.get(`http://15.165.169.129/api/club/notice/${noticePk.route.params.noticePk}?member_pk=1`);
@@ -61,8 +62,29 @@ const Watch = (noticePk:any) => {
                 console.log(error);
             };
     }
-    
-    console.log(notice);
+    const updateLike = async(blike:boolean) => {
+        try{
+            await axios.put(`http://15.165.169.129/api/like/notice/${noticePk.route.params.noticePk}?member_pk=1`,{
+                data:{
+                    blike: blike,
+                }
+            });
+        }catch(error){
+            console.log(error);
+        }
+    }
+    const commentPost = async(content:String) => {
+        try{
+            await axios.post(`15.165.169.129/api/comment/notice?member_pk=1&notice_pk=${noticePk.route.params.noticePk}`,{
+                comment: content,
+            });
+            return {
+                commentPk: 1,
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
     useEffect(() => {callApi()},[]);
     return (
         <View>
@@ -75,23 +97,29 @@ const Watch = (noticePk:any) => {
                 <Detail>{notice.content}</Detail>
                 <Image source={{uri:`${notice.imageUrl}`}}/>
                 <Counting>
-                    <Like onPress={() => setLike(true)}>
-                        {(like) ? (
-                        <AntDesign name="heart" size={24} color="black" />
+                    <Like onPress={() => {
+                        setLike(!like);
+                        notice.blike = !like;
+                        updateLike(notice.blike);
+                        }}>
+                        {like ? (
+                        <AntDesign name="heart" size={24} color="red" />
                         ) : (
-                        <AntDesign name="hearto" size={24} color="black" />
+                        <AntDesign name="hearto" size={24} color="red" />
                         )}
                     </Like>
                     <Text> {notice.likeCount} </Text>
-                    <EvilIcons name="comment" size={24} color="black" />
-                    <Text> comment count </Text>
                 </Counting>
         
                 <AddComment>
                     <CommentInput>
-                        <TextInput maxLength={300}/>
+                        <TextInput 
+                        maxLength={300} 
+                        onChangeText={(event) => {
+                            content = event;
+                }}/>
                     </CommentInput>
-                    <Button title='게시'/>
+                    <Button title='게시' onPress={()=>commentPost(content)}/>
                 </AddComment>
         
                 <CommentList>
@@ -114,3 +142,7 @@ const Watch = (noticePk:any) => {
 };
 
 export default Watch;
+
+function useFetch(): any {
+    throw new Error('Function not implemented.');
+}

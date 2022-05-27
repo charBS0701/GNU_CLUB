@@ -8,9 +8,8 @@ import { CheckedBox, UncheckedBox } from '../components/Icon';
 
 const Container = styled.View`
     display: flex;
-    fles-direction: row;
     flex: 1;
-    alignItems: center;
+    align-Items: center;
     padding-top: 15%;
 `;
 

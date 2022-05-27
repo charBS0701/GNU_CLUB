@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image } from 'react-native';
+import { ActivityIndicator, Image, View } from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 
@@ -46,82 +46,30 @@ const GoBack = styled.Text`
 
 const Notice = ({navigation, clubPk=1}) => {
     const [noticeList,setNoticeList] = useState<any>();
+    const [loading,setLoading] = useState(true);
     const callApi = async() => {
         try{
             const response = await axios.get(`http://15.165.169.129/api/club/${clubPk}/notices`);
             setNoticeList(response.data.data);
-            setTimeout(()=>'',1000);
+            setLoading(false);
         }catch(error){
             console.log(error);
         };
     }
-    const nList =[{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 1 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 2 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 3 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 4 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 5 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 6 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 7 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 8 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 9 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 10 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 11 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 12 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 13 공지사항",
-      },{
-        "imageUrl": null,
-        "noticePk": 1,
-        "title": "햇귀 14 공지사항",
-      },];
-
+    
     useEffect(() => {callApi()},[]);
     return (
+      <View>
+          {loading ? (<View>
+              <ActivityIndicator size="large" />
+          </View>) : (
         <Main>
             <Header>
                 <GoBack onPress={() => navigation.goBack()}>&lt;</GoBack>
                 <Posting onPress={() => navigation.navigate('Posting',{clubPk: clubPk})}>+</Posting>
             </Header>   
             <List>
-                {nList.reverse().map((notice:any,index:number)=>{
+                {noticeList.reverse().map((notice:any,index:number)=>{
                     return(
                     <Posted onPress={() => navigation.navigate('Watch',{noticePk: notice.noticePk})} key={index}>
                         <Title>{notice.title}</Title>
@@ -130,6 +78,8 @@ const Notice = ({navigation, clubPk=1}) => {
                 })}
             </List>
         </Main>
+            ) }    
+        </View>
     );
 };
 

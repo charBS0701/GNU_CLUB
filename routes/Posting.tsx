@@ -26,9 +26,9 @@ const Images = styled.View`
 `;
 
 
-const Posting = ({navigation}, clubPk:number) => {
-    let title:String;
-    let content:String;
+const Posting = (clubPk:any) => {
+    let title;
+    let content;
     const [image, setImage] = useState(null);
 
   const pickImage = async () => {
@@ -40,23 +40,24 @@ const Posting = ({navigation}, clubPk:number) => {
     });
     setImage(result.uri);
     }
-    
     const callApi = async() => {
+        const frm = new FormData();
+        frm.append('title',title);
+        frm.append('content',content);
         try{
-            const response = await axios.post(`http://15.165.169.129/api/club/${clubPk}/bulletin_board/notice`,{
-                notice:{
-                    title: title,
-                    content: content,
-                },
-            });
+            const response = await axios.post(`http://15.165.169.129/api/club/${clubPk.route.params.clubPk}/bulletin_board/notice`,frm,{
+                headers:{
+                    'Content-Type': 'application/json'
+                }});
+            console.log(frm,response);
             }catch(error){
-            console.log(error);
+            console.log(error.response.data);
         }
     }
     const post = () => {
         callApi();
         alert("게시물이 게시되었습니다.");
-        navigation.goBack();
+        clubPk.navigation.goBack();
     }
 
 

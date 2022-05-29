@@ -3,6 +3,7 @@ import {View,Text,Image, Button, TextInput, ActivityIndicator} from 'react-nativ
 import styled from 'styled-components/native';
 import axios from "axios";
 import { AntDesign } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Title = styled.Text`
     margin-top: 15%;
@@ -53,11 +54,20 @@ const Watch = (noticePk:any) => {
     const [notice,setNotice] = useState<any>();
     const [loading,setLoading] = useState(true);
     const [like,setLike] = useState(false);
+    const saveLike = async (like:any) => {
+        await AsyncStorage.setItem('like', JSON.stringify(like));
+      };
+    const loadLike = async () => {
+        const result = await AsyncStorage.getItem('like');
+        setLike(JSON.parse(result));
+        
+      };
     const callApi = async() => {
         try{
             const response = await axios.get(`http://15.165.169.129/api/club/notice/${noticePk.route.params.noticePk}?member_pk=1`);
             setNotice(response.data.data);
             setLoading(false);
+            loadLike();
             }catch(error){
                 console.log(error);
             };
@@ -69,6 +79,7 @@ const Watch = (noticePk:any) => {
                     blike: blike,
                 }
             });
+            console.log(blike);
         }catch(error){
             console.log(error);
         }
@@ -78,14 +89,12 @@ const Watch = (noticePk:any) => {
             await axios.post(`15.165.169.129/api/comment/notice?member_pk=1&notice_pk=${noticePk.route.params.noticePk}`,{
                 comment: content,
             });
-            return {
-                commentPk: 1,
-            }
         }catch(error){
-            console.log(error);
+            console.log(error.response.data);
         }
     }
     useEffect(() => {callApi()},[]);
+    
     return (
         <View>
             {loading ? (<View>
@@ -101,6 +110,7 @@ const Watch = (noticePk:any) => {
                         setLike(!like);
                         notice.blike = !like;
                         updateLike(notice.blike);
+                        saveLike(notice.blike);
                         }}>
                         {like ? (
                         <AntDesign name="heart" size={24} color="red" />

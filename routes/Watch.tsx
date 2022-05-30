@@ -79,7 +79,6 @@ const Watch = (noticePk:any) => {
                     blike: blike,
                 }
             });
-            console.log(blike);
         }catch(error){
             console.log(error);
         }

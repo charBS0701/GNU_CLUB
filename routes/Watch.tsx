@@ -50,24 +50,25 @@ const Like = styled.TouchableOpacity`
 `;
 
 const Watch = (noticePk:any) => {
-    let content:String;
+    let comment:String;
     const [notice,setNotice] = useState<any>();
     const [loading,setLoading] = useState(true);
     const [like,setLike] = useState(false);
     const saveLike = async (like:any) => {
-        await AsyncStorage.setItem('like', JSON.stringify(like));
+        await AsyncStorage.setItem(`${noticePk.route.params.noticePk}`, JSON.stringify(like));
       };
-    const loadLike = async () => {
-        const result = await AsyncStorage.getItem('like');
-        setLike(JSON.parse(result));
+    const loadLike = async (response) => {
+        await AsyncStorage.getItem(`${noticePk.route.params.noticePk}`);
+        setLike(response.data.data.blike);
       };
 
     const callApi = async() => {
         try{
             const response = await axios.get(`http://15.165.169.129/api/club/notice/${noticePk.route.params.noticePk}?member_pk=1`);
             setNotice(response.data.data);
+            loadLike(response);
             setLoading(false);
-            loadLike();
+            
             }catch(error){
                 console.log(error);
             };
@@ -77,19 +78,21 @@ const Watch = (noticePk:any) => {
             await axios.put(`http://15.165.169.129/api/like/notice/${noticePk.route.params.noticePk}?member_pk=1`,{
                 data:{
                     blike: blike,
+                    likeCount: notice.likeCount,
                 }
             });
         }catch(error){
             console.log(error);
         }
     }
-    const commentPost = async(content:String) => {
+    const commentPost = async(comment:String) => {
         try{
-            await axios.post(`15.165.169.129/api/comment/notice?member_pk=1&notice_pk=${noticePk.route.params.noticePk}`,{
+            const response = await axios.post(`15.165.169.129/api/comment/notice?member_pk=1&notice_pk=${noticePk.route.params.noticePk}`,{
                data:{ 
-                   comment: content,
+                   comment: comment,
                 }
             });
+            console.log(response);
         }catch(error){
             console.log(error.response.data);
         }
@@ -108,14 +111,19 @@ const Watch = (noticePk:any) => {
                 <Counting>
                     <Like onPress={() => {
                         setLike(!like);
-                        notice.blike = !like;
+                        notice.blike = like;
+                        if(notice.blike == true){
+                            notice.likeCount = notice.likeCount - 1;
+                            if(notice.likeCount<0){
+                                notice.likeCount = 0;
+                            }
+                        }else{
+                            notice.likeCount = notice.likeCount + 1;
+                            
+                        }
                         updateLike(notice.blike);
                         saveLike(notice.blike);
-                        if(notice.blike == true){
-                            notice.likeCount = notice.likeCount + 1;
-                        }else{
-                            notice.likeCount = notice.likeCount - 1;
-                        }
+                        
                         }}
                         >
                         {like ? (
@@ -132,10 +140,10 @@ const Watch = (noticePk:any) => {
                         <TextInput 
                         maxLength={300} 
                         onChangeText={(event) => {
-                            content = event;
+                            comment = event;
                 }}/>
                     </CommentInput>
-                    <Button title='게시' onPress={()=>commentPost(content)}/>
+                    <Button title='게시' onPress={()=>commentPost(comment)}/>
                 </AddComment>
         
                 <CommentList>

@@ -4,16 +4,14 @@ import styled from "styled-components/native";
 import Loader from "../components/Loader";
 import { CheckedBox, UncheckedBox } from "../components/Icon";
 
-const Container = styled.ScrollView`
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  align-items: center;
-  padding: 15% 5%;
-`;
+const Container = styled.ScrollView.attrs(() => ({
+  contentContainerStyle: {
+    alignItems: 'center',
+  },
+}))`
+  `;
 
 const ClubImage = styled.Image`
-  //   width: 90%;
   margin-left: auto;
   margin-right: auto;
 `;
@@ -25,6 +23,7 @@ const VContent = styled.View`
   justify-content: space-evenly;
   align-items: center;
   flex-wrap: wrap;
+  
 `;
 
 const VCenter = styled.View`
@@ -58,6 +57,7 @@ const Posting = styled.View`
   flex-direction: row;
   justify-content: space-evenly;
   margin: 0 0 5% 0;
+  width: 100%;
 `;
 
 const OnPressButton = styled.Button`

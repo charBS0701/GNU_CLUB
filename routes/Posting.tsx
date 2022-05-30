@@ -23,8 +23,14 @@ const Detail = styled.View`
 const Images = styled.View`
     width: 40%;
     margin-left: 10%;
+    margin-bottom: 10%;
 `;
 
+const PostButton = styled.View`
+    display: flex;
+    align-items: flex-end;
+    padding: 10%;
+`;
 
 const Posting = (clubPk:any) => {
     let title;
@@ -83,7 +89,9 @@ const Posting = (clubPk:any) => {
                 <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />
                 <Button title='사진 불러오기' onPress={() => pickImage()}/> 
             </Images>
-            <Button title='게시' onPress={() => post()} />
+            <PostButton>
+                <Button title='게시' onPress={() => post()} />
+            </PostButton>
         </View>
     );
 };

@@ -112,6 +112,11 @@ const Watch = (noticePk:any) => {
                         notice.blike = !like;
                         updateLike(notice.blike);
                         saveLike(notice.blike);
+                        if(notice.blike == true){
+                            notice.likeCount = notice.likeCount + 1;
+                        }else{
+                            notice.likeCount = notice.likeCount - 1;
+                        }
                         }}
                         >
                         {like ? (

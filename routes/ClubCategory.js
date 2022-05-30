@@ -15,7 +15,6 @@ const Screen = styled.ScrollView`
 const Container = styled.ScrollView`
   background-color: #9a9a9a;
   border-radius: 10px;
-  align-items: center;
 `;
 
 const CategoryName = styled.Text`
@@ -34,13 +33,13 @@ const List = styled.View`
   padding: 5px 13px 5px 11px;
 `;
 
-const ClubName = styled.TouchableOpacity``;
+const ClubName = styled.TouchableOpacity`
+`;
 const ClubNameText = styled.Text`
   font-size: 25px;
   color: #4b4b4b;
 `;
 const Bookmark = styled.TouchableOpacity`
-  // flex: 1;
 `;
 
 const ClubCategory = (props) => {

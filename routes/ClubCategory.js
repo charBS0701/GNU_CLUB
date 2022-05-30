@@ -37,7 +37,7 @@ const ClubNameText = styled.Text`
   color: #4b4b4b;
 `;
 const Bookmark = styled.TouchableOpacity`
-  // flex: 1;
+  
 `;
 
 const ClubCategory = (props) => {

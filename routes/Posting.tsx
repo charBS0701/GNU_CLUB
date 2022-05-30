@@ -41,15 +41,16 @@ const Posting = (clubPk:any) => {
     setImage(result.uri);
     }
     const callApi = async() => {
-        const frm = new FormData();
-        frm.append('title',title);
-        frm.append('content',content);
+
         try{
-            const response = await axios.post(`http://15.165.169.129/api/club/${clubPk.route.params.clubPk}/bulletin_board/notice`,frm,{
-                headers:{
-                    'Content-Type': 'application/json'
-                }});
-            console.log(frm,response);
+            const response = await axios.post(`http://15.165.169.129/api/club/${clubPk.route.params.clubPk}/bulletin_board/notice`,{
+                data: {
+                    title: title,
+                    content: content,
+                    imageUrl: image,
+                }
+            });
+            console.log(response);
             }catch(error){
             console.log(error.response.data);
         }
@@ -57,10 +58,9 @@ const Posting = (clubPk:any) => {
     const post = () => {
         callApi();
         alert("게시물이 게시되었습니다.");
-        clubPk.navigation.goBack();
+        clubPk.navigation.goBack(clubPk);
     }
-
-
+    
     return (
         <View>
             <Title>

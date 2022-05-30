@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View,Text,Image, Button, TextInput, ActivityIndicator} from 'react-native';
+import {View,Text,Image, Button, TextInput, ActivityIndicator, RefreshControl} from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 import { AntDesign } from '@expo/vector-icons';
@@ -60,8 +60,8 @@ const Watch = (noticePk:any) => {
     const loadLike = async () => {
         const result = await AsyncStorage.getItem('like');
         setLike(JSON.parse(result));
-        
       };
+
     const callApi = async() => {
         try{
             const response = await axios.get(`http://15.165.169.129/api/club/notice/${noticePk.route.params.noticePk}?member_pk=1`);
@@ -87,14 +87,15 @@ const Watch = (noticePk:any) => {
     const commentPost = async(content:String) => {
         try{
             await axios.post(`15.165.169.129/api/comment/notice?member_pk=1&notice_pk=${noticePk.route.params.noticePk}`,{
-                comment: content,
+               data:{ 
+                   comment: content,
+                }
             });
         }catch(error){
             console.log(error.response.data);
         }
     }
     useEffect(() => {callApi()},[]);
-    
     return (
         <View>
             {loading ? (<View>
@@ -111,7 +112,8 @@ const Watch = (noticePk:any) => {
                         notice.blike = !like;
                         updateLike(notice.blike);
                         saveLike(notice.blike);
-                        }}>
+                        }}
+                        >
                         {like ? (
                         <AntDesign name="heart" size={24} color="red" />
                         ) : (

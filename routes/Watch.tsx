@@ -88,12 +88,15 @@ const Watch = (noticePk:any) => {
     }
     const commentPost = async() => {
         try{
+            let data={
+                comment,
+            }
             const response = await axios.post(`15.165.169.129/api/comment/notice?member_pk=1&notice_pk=${noticePk.route.params.noticePk}`,
-            {data : {comment}},{
+            JSON.stringify(data),{
                 headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
+                'Content-Type': 'application/json'
+            }}
+            );
             console.log(response);
         }catch(error){
             console.log(error.response.data);
@@ -138,13 +141,16 @@ const Watch = (noticePk:any) => {
                 <AddComment>
                     <CommentInput>
                         <TextInput 
-                        maxLength={300} 
+                        value={comment}
+                        maxLength={300}
                         onChangeText={(event) => {
                             setComment(event);
                 }}/>
                     </CommentInput>
-                    <Button title='게시' onPress={()=>{
-                        commentPost();
+                    <Button title='게시'
+                        onPress={async()=>{
+                        await commentPost();
+                        setComment('');
                         }}/>
                 </AddComment>
         

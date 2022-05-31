@@ -52,7 +52,7 @@ const Notice = ({navigation, route}) => {
     const [loading,setLoading] = useState(true);
     const callApi = async() => {
         try{
-            const response = await axios.get(`http://15.165.169.129/api/club/{clubPk}/notices`);
+            const response = await axios.get(`http://15.165.169.129/api/club/${clubPk}/notices`);
             setNoticeList(response.data.data);
             setLoading(false);
         }catch(error){
@@ -68,13 +68,13 @@ const Notice = ({navigation, route}) => {
           </View>) : (
         <Main>
             <Header>
-                <GoBack onPress={() => clubPk.navigation.goBack()}>&lt;</GoBack>
-                <Posting onPress={() => clubPk.navigation.navigate('Posting',{clubPk: 1})}>+</Posting>
+                <GoBack onPress={() => navigation.goBack()}>&lt;</GoBack>
+                <Posting onPress={() => navigation.navigate('Posting',{clubPk: clubPk})}>+</Posting>
             </Header>   
             <List>
                 {noticeList.reverse().map((notice:any,index:number)=>{
                     return(
-                    <Posted onPress={() => clubPk.navigation.navigate('Watch',{noticePk: notice.noticePk})} key={index}>
+                    <Posted onPress={() => navigation.navigate('Watch',{noticePk: notice.noticePk})} key={index}>
                         <Title>{notice.title}</Title>
                     </Posted>
                     );

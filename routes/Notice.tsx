@@ -44,7 +44,10 @@ const GoBack = styled.Text`
     font-size: 40px;
 `;
 
-const Notice = (clubPk) => {
+const Notice = ({navigation, route}) => {
+    const clubPk = route.params.clubPk;
+    const member_pk = route.params.member_pk;
+    
     const [noticeList,setNoticeList] = useState<any>();
     const [loading,setLoading] = useState(true);
     const callApi = async() => {

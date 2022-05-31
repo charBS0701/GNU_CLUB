@@ -35,7 +35,10 @@ const GoBack = styled.Text`
     font-size: 40px;
 `;
 
-const Timeline = ({navigation}) => {
+const Timeline = ({navigation, route}) => {
+    const clubPk = route.params.clubPk;
+    const member_pk = route.params.member_pk;
+    
     return (
         <Main>
             <Header>

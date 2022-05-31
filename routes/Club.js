@@ -117,11 +117,6 @@ const Club = (props) => {
     setLoading(false);
   }, []);
 
-  // 네비게이션 이동
-  const nav = (page) => {
-    props.navigation.navigate(page);
-  };
-
   return loading ? (
     <Loader />
   ) : (
@@ -151,10 +146,26 @@ const Club = (props) => {
       </VContent>
 
       <Posting>
-        <OnPressButton title="공지사항" onPress={() => nav("Notice")}>
+        <OnPressButton
+          title="공지사항"
+          onPress={() => {
+            props.navigation.navigate("Notice", {
+              member_pk: member_pk,
+              clubPk: clubPk,
+            });
+          }}
+        >
           <ButtonText>공지사항</ButtonText>
         </OnPressButton>
-        <OnPressButton title="타임라인" onPress={() => nav("Timeline")}>
+        <OnPressButton
+          title="타임라인"
+          onPress={() => {
+            props.navigation.navigate("Timeline", {
+              member_pk: member_pk,
+              clubPk: clubPk,
+            });
+          }}
+        >
           <ButtonText>타임라인</ButtonText>
         </OnPressButton>
       </Posting>

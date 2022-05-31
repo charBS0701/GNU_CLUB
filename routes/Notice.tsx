@@ -52,7 +52,7 @@ const Notice = ({navigation, route}) => {
     const [loading,setLoading] = useState(true);
     const callApi = async() => {
         try{
-            const response = await axios.get(`http://15.165.169.129/api/club/{clubPk}/notices`);
+            const response = await axios.get(`http://15.165.169.129/api/club/${clubPk}/notices`);
             setNoticeList(response.data.data);
             setLoading(false);
         }catch(error){

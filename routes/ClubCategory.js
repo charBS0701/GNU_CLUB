@@ -33,24 +33,16 @@ const List = styled.View`
   padding: 5px 13px 5px 11px;
 `;
 
-const ClubName = styled.TouchableOpacity`
-`;
+const ClubName = styled.TouchableOpacity``;
 const ClubNameText = styled.Text`
   font-size: 25px;
   color: #4b4b4b;
 `;
-const Bookmark = styled.TouchableOpacity`
-`;
+const Bookmark = styled.TouchableOpacity``;
 
 const ClubCategory = (props) => {
   const [clubList, setClubList] = useState([]);
   const categoryPk = props.route.params.categoryPk;
-
-  let member = {
-    signInId: "byeoru",
-    joinedClubs: ["햇귀"],
-    bookmarks: [1],
-  };
 
   // 클럽 데이터 가져오기
   const getClubList = async () => {
@@ -69,6 +61,14 @@ const ClubCategory = (props) => {
     getClubList();
   }, []);
 
+  // 유저 더미데이터
+  let member = {
+    signInId: "byeoru",
+    joinedClubs: ["햇귀"],
+    bookmarks: [],
+  };
+  let memberPk = 1;
+
   // 즐겨찾기 여부 처리
   const checkFeather = (thisPk) => {
     var thisFeather = "";
@@ -84,15 +84,19 @@ const ClubCategory = (props) => {
     try {
       //const memberPk = await AsyncStorage.getItem("pk");
       const response = await fetch(
-        `http://15.165.169.129/api/member/1/bookmark?club_pk=${club_pk}`,
+        `http://15.165.169.129/api/member/${memberPk}/bookmark?club_pk=${club_pk}`,
         {
-          method: "POST",
+          method: "PUT",
         }
       );
       const json = await response.json();
-      console.log("추가된 북마크 pk: " + JSON.stringify(json));
-
-      // 페이지 새로고침 추가 필요D
+      console.log(json);
+      // console.log("추가된 북마크 pk: " + JSON.stringify(json));
+      // 페이지 새로고침 추가 필요
+      // 북마크 눌럿을때 이거 수정해야함 @@@@@@@@@@@@@@@@@@@@@@@@@@
+      // useEffect(() => {
+      //   ClubCategory(), [json.data];
+      // });
     } catch (error) {
       console.log("error in get club list: " + error);
     }
@@ -106,7 +110,7 @@ const ClubCategory = (props) => {
   return (
     <Screen>
       <Container>
-        <CategoryName>{props.route.params.categoryName} 분야 </CategoryName>
+        <CategoryName>{props.route.params.categoryName} 분야</CategoryName>
         {clubList.map((club, key) => {
           return (
             <List key={key}>
@@ -119,38 +123,6 @@ const ClubCategory = (props) => {
             </List>
           );
         })}
-        <List>
-          <ClubName>
-            <ClubNameText>더미데이터1</ClubNameText>
-          </ClubName>
-          <Bookmark>
-            <UnBookmarked />
-          </Bookmark>
-        </List>
-        <List>
-          <ClubName>
-            <ClubNameText>더미데이터2</ClubNameText>
-          </ClubName>
-          <Bookmark>
-            <UnBookmarked />
-          </Bookmark>
-        </List>
-        <List>
-          <ClubName>
-            <ClubNameText>더미데이터3</ClubNameText>
-          </ClubName>
-          <Bookmark>
-            <UnBookmarked />
-          </Bookmark>
-        </List>
-        <List>
-          <ClubName>
-            <ClubNameText>더미데이터4</ClubNameText>
-          </ClubName>
-          <Bookmark>
-            <UnBookmarked />
-          </Bookmark>
-        </List>
       </Container>
     </Screen>
   );

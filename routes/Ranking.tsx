@@ -4,32 +4,46 @@ import styled from "styled-components/native";
 import { Feather } from "@expo/vector-icons";
 
 const Main = styled.View`
-  display: flex;
+  // display: flex;
   justify-content: center;
   padding: 0 10%;
 `;
 
 const RankingCategory = styled.Text`
-  font-size: 30px;
+  font-size: 27px;
   margin-top: 10%;
   margin-bottom: 3%;
-  padding: 0 3%;
+  padding: 0 1%;
 `;
-const RankingContainer = styled.View`
-  flex-direction: column;
+const RankingContainer = styled.View``;
+
+const VContent = styled.View`
+  // grid-template-columns: 300px 1fr;
+  display: flex;
+  flex-direction: row;
+  border: ;
+`;
+const RankingRank = styled.View`
+  background-color: orange;
+  padding: 0 5%;
+`;
+const RankingRankText = styled.Text`
+  font-size: 30px;
 `;
 
-const RankingRank = styled.View``;
-
-const RankingRankText = styled.Text``;
-
-const RankingClub = styled.View``;
-
-const RankingClubText = styled.Text``;
-
+const RankingClub = styled.View`
+  background-color: #ced1ce;
+  padding: 0% 5%;
+  flex: 1;
+`;
+const RankingClubText = styled.Text`
+  font-size: 30px;
+  font-weight: 300;
+`;
 
 const Ranking = ({ navigation }) => {
   const [rankingTotal, setRankingTotal] = useState([]);
+  const [rankingWeek, setRankingWeek] = useState([]);
 
   // 전체 랭킹 데이터 가져오기
   const getRankingTotal = async () => {
@@ -39,9 +53,21 @@ const Ranking = ({ navigation }) => {
       );
       const json = await response.json();
       setRankingTotal(json.data);
-      console.log(json);
     } catch (error) {
       console.log("error in get ranking total " + error);
+    }
+  };
+
+  // 이번주 랭킹 가져오기
+  const getRankingWeek = async () => {
+    try {
+      const response = await fetch(
+        `http://15.165.169.129/api/clubs/ranking/week`
+      );
+      const json = await response.json();
+      setRankingWeek(json.data);
+    } catch (error) {
+      console.log("error in get ranking week" + error);
     }
   };
 
@@ -50,25 +76,31 @@ const Ranking = ({ navigation }) => {
   }, []);
   return (
     <Main>
-      <RankingCategory>랭킹</RankingCategory>
+      <RankingCategory>전체 동아리 랭킹</RankingCategory>
       <RankingContainer>
         {rankingTotal.map((club) => (
-          <RankingRank>
-            <RankingRankText>1</RankingRankText>
+          <VContent>
+            <RankingRank>
+              <RankingRankText>1</RankingRankText>
+            </RankingRank>
             <RankingClub>
-              <RankingClubText>{club.clubName}</RankingClubText>
+              <RankingClubText onPress={() => navigation.navigate("Club")}>{club.clubName}</RankingClubText>
             </RankingClub>
-          </RankingRank>
+          </VContent>
         ))}
-
-        {/* <Inline>
-          <Text>1</Text>
-          <Club onPress={() => navigation.navigate("Club")}>동아리 1</Club>
-          <Feather name="bookmark" size={24} color="black" />
-        </Inline> */}
 
       </RankingContainer>
       <RankingCategory>이번 주 HOT 동아리</RankingCategory>
+      {rankingWeek.map((club) => (
+        <VContent>
+          <RankingRank>
+            <RankingRankText>1</RankingRankText>
+          </RankingRank>
+          <RankingClub>
+            <RankingClubText>{club.clubName}</RankingClubText>
+          </RankingClub>
+        </VContent>
+      ))}
     </Main>
   );
 };

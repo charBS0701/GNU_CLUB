@@ -99,6 +99,7 @@ const Club = (props) => {
   });
   const clubPk = props.route.params.clubPk;
   const member_pk = 1;
+  console.log(props);
 
   // 클럽 데이터 가져오기
   const getClubData = async () => {

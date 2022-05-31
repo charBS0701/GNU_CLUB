@@ -61,7 +61,6 @@ const Posting = (clubPk:any) => {
                     'Accept': '*/*'
                 }
             });
-            console.log(response);
             }catch(error){
             console.log(error.response.data);
         }

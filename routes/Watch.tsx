@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View,Text,Image, Button, TextInput, ActivityIndicator, RefreshControl} from 'react-native';
+import {View,Text,Image, Button, TextInput, ActivityIndicator} from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 import { AntDesign } from '@expo/vector-icons';
@@ -42,6 +42,7 @@ const CommentList = styled.View`
 const Comment = styled.View`
     border: 1px solid black;
     margin-bottom: 10%;
+    padding: 2%;
 `;
 
 const Like = styled.TouchableOpacity`
@@ -50,10 +51,10 @@ const Like = styled.TouchableOpacity`
 `;
 
 const Watch = (noticePk:any) => {
-    let comment:String;
     const [notice,setNotice] = useState<any>();
     const [loading,setLoading] = useState(true);
     const [like,setLike] = useState(false);
+    const [comment,setComment] = useState('');
     const saveLike = async (like:any) => {
         await AsyncStorage.setItem(`${noticePk.route.params.noticePk}`, JSON.stringify(like));
       };
@@ -85,11 +86,12 @@ const Watch = (noticePk:any) => {
             console.log(error);
         }
     }
-    const commentPost = async(comment:String) => {
+    const commentPost = async() => {
         try{
-            const response = await axios.post(`15.165.169.129/api/comment/notice?member_pk=1&notice_pk=${noticePk.route.params.noticePk}`,{
-               data:{ 
-                   comment: comment,
+            const response = await axios.post(`15.165.169.129/api/comment/notice?member_pk=1&notice_pk=${noticePk.route.params.noticePk}`,
+            {data : {comment}},{
+                headers: {
+                    'Content-Type': 'application/json',
                 }
             });
             console.log(response);
@@ -119,11 +121,9 @@ const Watch = (noticePk:any) => {
                             }
                         }else{
                             notice.likeCount = notice.likeCount + 1;
-                            
                         }
                         updateLike(notice.blike);
                         saveLike(notice.blike);
-                        
                         }}
                         >
                         {like ? (
@@ -140,23 +140,26 @@ const Watch = (noticePk:any) => {
                         <TextInput 
                         maxLength={300} 
                         onChangeText={(event) => {
-                            comment = event;
+                            setComment(event);
                 }}/>
                     </CommentInput>
-                    <Button title='게시' onPress={()=>commentPost(comment)}/>
+                    <Button title='게시' onPress={()=>{
+                        commentPost();
+                        }}/>
                 </AddComment>
         
                 <CommentList>
                     <Comment>
-                        <Text>id</Text>
-                        <Text>detail</Text>
+                        <Text>1</Text>
                     </Comment>
-                    <Comment>
-                        <Text>댓글2</Text>
+                    {notice.comments.map((comment:any,index:number)=>{
+                    return(
+                    <Comment key={index}>
+                        <Image source={{ uri: '' }} style={{ width: 30, height: 30 }} />
+                        <Title>{comment}</Title>
                     </Comment>
-                    <Comment>
-                        <Text>댓글3</Text>
-                    </Comment>
+                    );
+                })}
                 </CommentList> 
                 </View>
             ) }    
@@ -166,7 +169,3 @@ const Watch = (noticePk:any) => {
 };
 
 export default Watch;
-
-function useFetch(): any {
-    throw new Error('Function not implemented.');
-}

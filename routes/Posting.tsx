@@ -3,13 +3,14 @@ import {View, TextInput, Button, Image} from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 import * as ImagePicker from 'expo-image-picker';
+import FormData from 'form-data';
 
 const Title = styled.View`
     display: flex;
     border: 1px solid black;
     margin: 0 10%;
     margin-top: 15%;
-    padding-left: 5%;
+    padding: 0 5%;
 `;
 
 const Detail = styled.View`
@@ -17,7 +18,7 @@ const Detail = styled.View`
     display: flex;
     border: 1px solid black;
     margin: 10%;
-    padding-left: 5%;
+    padding: 0 5%;
 `;
 
 const Images = styled.View`
@@ -35,7 +36,7 @@ const PostButton = styled.View`
 const Posting = (clubPk:any) => {
     let title;
     let content;
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState();
 
   const pickImage = async () => {
     let result:any = await ImagePicker.launchImageLibraryAsync({
@@ -47,16 +48,19 @@ const Posting = (clubPk:any) => {
     setImage(result.uri);
     }
     const callApi = async() => {
-
         try{
-            const response = await axios.post(`http://15.165.169.129/api/club/${clubPk.route.params.clubPk}/bulletin_board/notice`,{
-                data: {
-                    title: title,
-                    content: content,
-                    imageUrl: image,
+            const formData = new FormData();
+            formData.append('image',null);
+            formData.append('dto', {'string': JSON.stringify({title, content}), type: 'application/json'});
+            await axios({
+                method: 'post',
+                url: `http://15.165.169.129/api/club/${clubPk.route.params.clubPk}/bulletin_board/notice`,
+                data: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Accept': '*/*'
                 }
             });
-            console.log(response);
             }catch(error){
             console.log(error.response.data);
         }
@@ -64,9 +68,9 @@ const Posting = (clubPk:any) => {
     const post = () => {
         callApi();
         alert("게시물이 게시되었습니다.");
-        clubPk.navigation.goBack(clubPk);
+        clubPk.navigation.goBack();
     }
-    
+
     return (
         <View>
             <Title>
@@ -81,6 +85,7 @@ const Posting = (clubPk:any) => {
                 <TextInput 
                 placeholder='detail' 
                 maxLength={5000}
+                multiline={true}
                 onChangeText={(event) => {
                     content = event;
                 }}/>

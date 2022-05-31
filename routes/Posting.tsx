@@ -10,7 +10,7 @@ const Title = styled.View`
     border: 1px solid black;
     margin: 0 10%;
     margin-top: 15%;
-    padding-left: 5%;
+    padding: 0 5%;
 `;
 
 const Detail = styled.View`
@@ -18,7 +18,7 @@ const Detail = styled.View`
     display: flex;
     border: 1px solid black;
     margin: 10%;
-    padding-left: 5%;
+    padding: 0 5%;
 `;
 
 const Images = styled.View`
@@ -85,6 +85,7 @@ const Posting = (clubPk:any) => {
                 <TextInput 
                 placeholder='detail' 
                 maxLength={5000}
+                multiline={true}
                 onChangeText={(event) => {
                     content = event;
                 }}/>

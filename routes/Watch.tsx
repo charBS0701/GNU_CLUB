@@ -149,9 +149,12 @@ const Watch = (noticePk:any) => {
                     </CommentInput>
                     <Button title='게시'
                         onPress={async()=>{
-                        await commentPost();
-                        setComment('');
-                        }}/>
+                        if(comment == ''){
+                            alert('내용을 입력하세요');
+                        }else{
+                            await commentPost();
+                            setComment('');
+                        }}}/>
                 </AddComment>
         
                 <CommentList>

@@ -52,7 +52,7 @@ const Posting = (clubPk:any) => {
             const formData = new FormData();
             formData.append('image',null);
             formData.append('dto', {'string': JSON.stringify({title, content}), type: 'application/json'});
-            const response = await axios({
+            await axios({
                 method: 'post',
                 url: `http://15.165.169.129/api/club/${clubPk.route.params.clubPk}/bulletin_board/notice`,
                 data: formData,

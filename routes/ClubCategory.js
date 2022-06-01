@@ -92,12 +92,13 @@ const ClubCategory = (props) => {
     return isBook ? <Bookmarked /> : <UnBookmarked />
   };
 
-  // 즐겨찾기  api
+  // 즐겨찾기 추가/제거
   const clickBookMark = async (club_pk) => {
     try {
-      //const memberPk = await AsyncStorage.getItem("pk");
+      const memberPk = await AsyncStorage.getItem("pk");
+      console.log(memberPk);
       const response = await fetch(
-        `http://15.165.169.129/api/member/1/bookmark?club_pk=${club_pk}`,
+        `http://15.165.169.129/api/member/${memberPk}/bookmark?club_pk=${club_pk}`,
         {
           method: "PUT",
         }

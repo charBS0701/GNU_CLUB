@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, TextInput, Button, Image} from 'react-native';
+import {View, TextInput, Text, Image} from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 import * as ImagePicker from 'expo-image-picker';
@@ -31,6 +31,23 @@ const PostButton = styled.View`
     display: flex;
     align-items: flex-end;
     padding: 10%;
+    
+`;
+
+const Btn = styled.TouchableOpacity`
+    padding: 2% 13%;
+    border-radius: 5px;
+    background-color: #0d6efd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    width: 150px;
+`;
+
+const BtnText = styled.Text`
+    color: white;
+    font-size: 15px;
 `;
 
 const Posting = (clubPk:any) => {
@@ -92,10 +109,14 @@ const Posting = (clubPk:any) => {
             </Detail>
             <Images>
                 <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />
-                <Button title='사진 불러오기' onPress={() => pickImage()}/> 
+                <Btn onPress={() => pickImage()}>
+                    <BtnText>사진 불러오기</BtnText>
+                </Btn>
             </Images>
             <PostButton>
-                <Button title='게시' onPress={() => post()} />
+                <Btn onPress={() => post()}>
+                    <BtnText>게시</BtnText>
+                </Btn>
             </PostButton>
         </View>
     );

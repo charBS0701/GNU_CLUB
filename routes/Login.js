@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
-import { Text, Button, TextInput, AsyncStorage, View, TouchableOpacity } from "react-native";
+import { Text, Button, TextInput, View, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
@@ -28,8 +28,8 @@ const Login = ({ navigation }) => {
       const response = await fetch(`http://15.165.169.129/api/member/signIn`, {
         method: "POST",
         body: JSON.stringify({
-          signInId: "byeoru",
-          password: "1234",
+          signInId: id,
+          password: pw,
         }),
         headers: {
           "Content-Type": "application/json",

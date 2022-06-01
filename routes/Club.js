@@ -63,7 +63,6 @@ const Posting = styled.View`
 
 const OnPressButton = styled.TouchableOpacity`
   padding: 2% 13%;
-  // border: ;
   border-radius: 5px;
   background-color: #0d6efd;
 `;

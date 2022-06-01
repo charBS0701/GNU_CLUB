@@ -88,11 +88,12 @@ const Watch = (noticePk:any) => {
     }
     const commentPost = async() => {
         try{
-            let data={
-                comment,
-            }
-            const response = await axios.post(`15.165.169.129/api/comment/notice?member_pk=1&notice_pk=${noticePk.route.params.noticePk}`,
-            JSON.stringify(data),{
+            const response = await axios.post(`15.165.169.129/api/comment/notice?member_pk=${noticePk.route.params.memberPk}&notice_pk=${noticePk.route.params.noticePk}`,
+            {
+                data:{
+                    comment,
+                }
+            },{
                 headers: {
                 'Content-Type': 'application/json'
             }}

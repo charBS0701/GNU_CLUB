@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
 import { Text, Button, TextInput, AsyncStorage, View, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
@@ -24,22 +25,12 @@ const Login = ({ navigation }) => {
   // 로그인 버튼 실행 함수
   const requestLogin = async () => {
     try {
-      var dataToSend = {
-        signInId: id,
-        password: pw,
-      };
-
-      var formBody = [];
-      for (var key in dataToSend) {
-        var encodedKey = encodeURIComponent(key);
-        var encodedValue = encodeURIComponent(dataToSend[key]);
-        formBody.push(encodedKey + "=" + encodedValue);
-      }
-      formBody = formBody.join("&");
-
       const response = await fetch(`http://15.165.169.129/api/member/signIn`, {
         method: "POST",
-        body: formBody,
+        body: JSON.stringify({
+          signInId: "byeoru",
+          password: "1234",
+        }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -47,7 +38,7 @@ const Login = ({ navigation }) => {
       const userData = await response.json();
       console.log("user Pk: " + JSON.stringify(userData));
 
-      // AsyncStorage.setItem("pk", userData);
+      AsyncStorage.setItem("pk", userData.data.toString());
       nav(`Main`);
     } catch (error) {
       console.log("error in request login: " + error);

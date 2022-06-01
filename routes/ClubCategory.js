@@ -33,24 +33,19 @@ const List = styled.View`
   padding: 5px 13px 5px 11px;
 `;
 
-const ClubName = styled.TouchableOpacity`
-`;
+const ClubName = styled.TouchableOpacity``;
 const ClubNameText = styled.Text`
   font-size: 25px;
   color: #4b4b4b;
 `;
-const Bookmark = styled.TouchableOpacity`
-`;
+const Bookmark = styled.TouchableOpacity``;
 
 const ClubCategory = (props) => {
   const [clubList, setClubList] = useState([]);
+  const [userInfo, setUserInfo] = useState({
+    bookmarks: []
+  });
   const categoryPk = props.route.params.categoryPk;
-
-  let member = {
-    signInId: "byeoru",
-    joinedClubs: ["햇귀"],
-    bookmarks: [1],
-  };
 
   // 클럽 데이터 가져오기
   const getClubList = async () => {
@@ -59,6 +54,7 @@ const ClubCategory = (props) => {
         `http://15.165.169.129/api/category/${categoryPk}/clubs`
       );
       const json = await response.json();
+      console.log(JSON.stringify(json));
       setClubList(json.data);
     } catch (error) {
       console.log("error in get club list: " + error);
@@ -67,34 +63,50 @@ const ClubCategory = (props) => {
 
   useEffect(() => {
     getClubList();
+    getUserInfo();
   }, []);
 
-  // 즐겨찾기 여부 처리
-  const checkFeather = (thisPk) => {
-    var thisFeather = "";
-    member.bookmarks.includes(thisPk)
-      ? (thisFeather = <Bookmarked />)
-      : (thisFeather = <UnBookmarked />);
-
-    return <View>{thisFeather}</View>;
+  // 멤버의 즐겨찾기 한 동아리 출력
+  const getUserInfo = async () => {
+    try {
+      const response = await fetch(
+        `http://15.165.169.129/api/member/1/my_page`
+      );
+      const json = await response.json();
+      console.log(JSON.stringify(json));
+      setUserInfo(json.data);
+    } catch (error) {
+      console.log("error in get user info: " + error);
+    }
   };
 
-  // 즐겨찾기  api
+
+  // 즐겨찾기 여부 처리
+  const checkFeather = (thisName) => {
+    var isBook = false;
+    userInfo.bookmarks.map((thisClub) => {
+      if(thisClub.bookmarkName === thisName)
+        isBook = true;
+    })
+
+    return isBook ? <Bookmarked /> : <UnBookmarked />
+  };
+
+  // 즐겨찾기 추가/제거
   const clickBookMark = async (club_pk) => {
     try {
-      //const memberPk = await AsyncStorage.getItem("pk");
+      const memberPk = await AsyncStorage.getItem("pk");
+      console.log(memberPk);
       const response = await fetch(
-        `http://15.165.169.129/api/member/1/bookmark?club_pk=${club_pk}`,
+        `http://15.165.169.129/api/member/${memberPk}/bookmark?club_pk=${club_pk}`,
         {
-          method: "POST",
+          method: "PUT",
         }
       );
       const json = await response.json();
-      console.log("추가된 북마크 pk: " + JSON.stringify(json));
-
-      // 페이지 새로고침 추가 필요D
+      getUserInfo();
     } catch (error) {
-      console.log("error in get club list: " + error);
+      console.log("error in click book mark: " + error);
     }
   };
 
@@ -105,8 +117,8 @@ const ClubCategory = (props) => {
 
   return (
     <Screen>
-      <Container>
-        <CategoryName>{props.route.params.categoryName} 분야 </CategoryName>
+      <Container >
+        <CategoryName>{props.route.params.categoryName} 분야</CategoryName>
         {clubList.map((club, key) => {
           return (
             <List key={key}>
@@ -114,43 +126,11 @@ const ClubCategory = (props) => {
                 <ClubNameText>{club.clubName}</ClubNameText>
               </ClubName>
               <TouchableOpacity onPress={() => clickBookMark(club.clubPk)}>
-                {checkFeather(club.clubPk)}
+                {checkFeather(club.clubName)}
               </TouchableOpacity>
             </List>
           );
         })}
-        <List>
-          <ClubName>
-            <ClubNameText>더미데이터1</ClubNameText>
-          </ClubName>
-          <Bookmark>
-            <UnBookmarked />
-          </Bookmark>
-        </List>
-        <List>
-          <ClubName>
-            <ClubNameText>더미데이터2</ClubNameText>
-          </ClubName>
-          <Bookmark>
-            <UnBookmarked />
-          </Bookmark>
-        </List>
-        <List>
-          <ClubName>
-            <ClubNameText>더미데이터3</ClubNameText>
-          </ClubName>
-          <Bookmark>
-            <UnBookmarked />
-          </Bookmark>
-        </List>
-        <List>
-          <ClubName>
-            <ClubNameText>더미데이터4</ClubNameText>
-          </ClubName>
-          <Bookmark>
-            <UnBookmarked />
-          </Bookmark>
-        </List>
       </Container>
     </Screen>
   );

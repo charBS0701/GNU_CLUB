@@ -40,7 +40,10 @@ const CommentList = styled.View`
     padding: 10%;
 `;
 const Comment = styled.View`
+    display: flex;
+    flex-direction: row;
     border: 1px solid black;
+    border-radius: 20px;
     margin-bottom: 10%;
     padding: 2%;
 `;
@@ -50,6 +53,38 @@ const Like = styled.TouchableOpacity`
     justify-content: center;
 `;
 
+const Content = styled.View`
+    position: relative;
+`;
+
+const Id = styled.Text`
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 600;
+`;
+
+const CommentDetail = styled.Text`
+    font-size: 15px;
+`;
+
+const DelBtn = styled.TouchableOpacity`
+    position: absolute;
+    left: 90%;
+    top: 10%;
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const Del = styled.Text`
+    color: white;
+    font-size: 20px;
+    font-weight: 900;
+`
+
 const Watch = (noticePk:any) => {
     const [notice,setNotice] = useState<any>();
     const [loading,setLoading] = useState(true);
@@ -58,7 +93,7 @@ const Watch = (noticePk:any) => {
     const saveLike = async (like:any) => {
         await AsyncStorage.setItem(`${noticePk.route.params.noticePk}`, JSON.stringify(like));
       };
-    const loadLike = async (response) => {
+    const loadLike = async (response:any) => {
         await AsyncStorage.getItem(`${noticePk.route.params.noticePk}`);
         setLike(response.data.data.blike);
       };
@@ -88,14 +123,14 @@ const Watch = (noticePk:any) => {
     }
     const commentPost = async() => {
         try{
-            let data={
-                comment,
+            const formData = new FormData();
+            formData.append('comment',comment);
+            const response = await axios.post(`15.165.169.129/api/comment/notice?member_pk=${noticePk.route.params.memberPk}&notice_pk=${noticePk.route.params.noticePk}`,
+            formData,{
+                headers:{
+                'Content-Type': 'application/json',
+                }
             }
-            const response = await axios.post(`15.165.169.129/api/comment/notice?member_pk=1&notice_pk=${noticePk.route.params.noticePk}`,
-            JSON.stringify(data),{
-                headers: {
-                'Content-Type': 'application/json'
-            }}
             );
             console.log(response);
         }catch(error){
@@ -158,14 +193,17 @@ const Watch = (noticePk:any) => {
                 </AddComment>
         
                 <CommentList>
-                    <Comment>
-                        <Text>1</Text>
-                    </Comment>
                     {notice.comments.map((comment:any,index:number)=>{
                     return(
                     <Comment key={index}>
-                        <Image source={{ uri: '' }} style={{ width: 30, height: 30 }} />
-                        <Title>{comment}</Title>
+                        <Image source={{ uri: null }} style={{ width: 40, height: 40 }} />
+                        <Content>
+                            <Id>{notice.comments[index].userId}</Id>
+                            <CommentDetail>{notice.comments[index].comment}</CommentDetail>
+                        </Content>
+                        <DelBtn>
+                            <Del>X</Del>
+                        </DelBtn>
                     </Comment>
                     );
                 })}

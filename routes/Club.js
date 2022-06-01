@@ -55,27 +55,34 @@ const CheckinView = styled.View`
 `;
 const Posting = styled.View`
   display: flex;
+  flex: 1;
   flex-direction: row;
   justify-content: space-evenly;
-  margin: 0 0 10% 0;
-  width: 100%;
+  margin: 0 0 3% 0;
 `;
 
 const OnPressButton = styled.TouchableOpacity`
   padding: 2% 13%;
-  // border: ;
+  margin: 0 3%;
   border-radius: 5px;
   background-color: #0d6efd;
+`;
+
+const SubmitButton = styled(OnPressButton)`
+  padding: 2%;
+  width: 99%;
 `;
 
 const ButtonText = styled.Text`
   font-size: 20px;
   color: white;
   font-weight: 200;
+  text-align: center;
 `;
 
 const IntroducingContainer = styled.View`
   padding: 0 5%;
+  margin: 6% 0 0 0 ;
 `;
 const IntroducingLabel = styled.Text`
   font-weight: bold;
@@ -99,6 +106,7 @@ const Club = (props) => {
   });
   const clubPk = props.route.params.clubPk;
   const member_pk = 1;
+  console.log(props);
 
   // 클럽 데이터 가져오기
   const getClubData = async () => {
@@ -172,6 +180,9 @@ const Club = (props) => {
             <ButtonText>타임라인</ButtonText>
           </OnPressButton>
         </Posting>
+        <SubmitButton>
+          <ButtonText>가입신청</ButtonText>
+        </SubmitButton>
       </Container>
       <IntroducingContainer>
         <IntroducingLabel>동아리 소개</IntroducingLabel>

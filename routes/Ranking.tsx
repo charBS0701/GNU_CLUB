@@ -71,13 +71,14 @@ const Ranking = ({ navigation }) => {
     }
   };
 
-    // 네비게이션 이동
-    const nav = (page, clubPk) => {
-      navigation.navigate(page, { clubPk });
-    };
+  // 네비게이션 이동
+  const nav = (page, clubPk) => {
+    navigation.navigate(page, { clubPk });
+  };
 
   useEffect(() => {
     getRankingTotal();
+    getRankingWeek();
   }, []);
   return (
     <Main>
@@ -86,23 +87,26 @@ const Ranking = ({ navigation }) => {
         {rankingTotal.map((club, key) => (
           <VContent key={key}>
             <RankingRank>
-              <RankingRankText>{key+1}</RankingRankText>
+              <RankingRankText>{key + 1}</RankingRankText>
             </RankingRank>
             <RankingClub>
-              <RankingClubText onPress={() => nav("Club", club.clubPk )}>{club.clubName}</RankingClubText>
+              <RankingClubText onPress={() => nav("Club", club.clubPk)}>
+                {club.clubName}
+              </RankingClubText>
             </RankingClub>
           </VContent>
         ))}
-
       </RankingContainer>
       <RankingCategory>이번 주 HOT 동아리</RankingCategory>
-      {rankingWeek.map((club) => (
-        <VContent>
+      {rankingWeek.map((club, key) => (
+        <VContent key={key}>
           <RankingRank>
-            <RankingRankText>1</RankingRankText>
+            <RankingRankText>{key + 1}</RankingRankText>
           </RankingRank>
           <RankingClub>
-            <RankingClubText>{club.clubName}</RankingClubText>
+            <RankingClubText onPress={() => nav("Club", club.clubPk)}>
+              {club.clubName}
+            </RankingClubText>
           </RankingClub>
         </VContent>
       ))}

@@ -42,6 +42,9 @@ const Bookmark = styled.TouchableOpacity``;
 
 const ClubCategory = (props) => {
   const [clubList, setClubList] = useState([]);
+  const [userInfo, setUserInfo] = useState({
+    bookmarks: []
+  });
   const categoryPk = props.route.params.categoryPk;
 
   // 클럽 데이터 가져오기
@@ -51,6 +54,7 @@ const ClubCategory = (props) => {
         `http://15.165.169.129/api/category/${categoryPk}/clubs`
       );
       const json = await response.json();
+      console.log(JSON.stringify(json));
       setClubList(json.data);
     } catch (error) {
       console.log("error in get club list: " + error);
@@ -59,24 +63,33 @@ const ClubCategory = (props) => {
 
   useEffect(() => {
     getClubList();
+    getUserInfo();
   }, []);
 
-  // 유저 더미데이터
-  let member = {
-    signInId: "byeoru",
-    joinedClubs: ["햇귀"],
-    bookmarks: [],
+  // 멤버의 즐겨찾기 한 동아리 출력
+  const getUserInfo = async () => {
+    try {
+      const response = await fetch(
+        `http://15.165.169.129/api/member/1/my_page`
+      );
+      const json = await response.json();
+      console.log(JSON.stringify(json));
+      setUserInfo(json.data);
+    } catch (error) {
+      console.log("error in get user info: " + error);
+    }
   };
-  let memberPk = 1;
+
 
   // 즐겨찾기 여부 처리
-  const checkFeather = (thisPk) => {
-    var thisFeather = "";
-    member.bookmarks.includes(thisPk)
-      ? (thisFeather = <Bookmarked />)
-      : (thisFeather = <UnBookmarked />);
+  const checkFeather = (thisName) => {
+    var isBook = false;
+    userInfo.bookmarks.map((thisClub) => {
+      if(thisClub.bookmarkName === thisName)
+        isBook = true;
+    })
 
-    return <View>{thisFeather}</View>;
+    return isBook ? <Bookmarked /> : <UnBookmarked />
   };
 
   // 즐겨찾기  api
@@ -84,21 +97,15 @@ const ClubCategory = (props) => {
     try {
       //const memberPk = await AsyncStorage.getItem("pk");
       const response = await fetch(
-        `http://15.165.169.129/api/member/${memberPk}/bookmark?club_pk=${club_pk}`,
+        `http://15.165.169.129/api/member/1/bookmark?club_pk=${club_pk}`,
         {
           method: "PUT",
         }
       );
       const json = await response.json();
-      console.log(json);
-      // console.log("추가된 북마크 pk: " + JSON.stringify(json));
-      // 페이지 새로고침 추가 필요
-      // 북마크 눌럿을때 이거 수정해야함 @@@@@@@@@@@@@@@@@@@@@@@@@@
-      // useEffect(() => {
-      //   ClubCategory(), [json.data];
-      // });
+      getUserInfo();
     } catch (error) {
-      console.log("error in get club list: " + error);
+      console.log("error in click book mark: " + error);
     }
   };
 
@@ -109,7 +116,7 @@ const ClubCategory = (props) => {
 
   return (
     <Screen>
-      <Container>
+      <Container >
         <CategoryName>{props.route.params.categoryName} 분야</CategoryName>
         {clubList.map((club, key) => {
           return (
@@ -118,7 +125,7 @@ const ClubCategory = (props) => {
                 <ClubNameText>{club.clubName}</ClubNameText>
               </ClubName>
               <TouchableOpacity onPress={() => clickBookMark(club.clubPk)}>
-                {checkFeather(club.clubPk)}
+                {checkFeather(club.clubName)}
               </TouchableOpacity>
             </List>
           );

@@ -71,6 +71,11 @@ const Ranking = ({ navigation }) => {
     }
   };
 
+    // 네비게이션 이동
+    const nav = (page, clubPk) => {
+      navigation.navigate(page, { clubPk });
+    };
+
   useEffect(() => {
     getRankingTotal();
   }, []);
@@ -78,13 +83,13 @@ const Ranking = ({ navigation }) => {
     <Main>
       <RankingCategory>전체 동아리 랭킹</RankingCategory>
       <RankingContainer>
-        {rankingTotal.map((club) => (
-          <VContent>
+        {rankingTotal.map((club, key) => (
+          <VContent key={key}>
             <RankingRank>
-              <RankingRankText>1</RankingRankText>
+              <RankingRankText>{key+1}</RankingRankText>
             </RankingRank>
             <RankingClub>
-              <RankingClubText onPress={() => navigation.navigate("Club")}>{club.clubName}</RankingClubText>
+              <RankingClubText onPress={() => nav("Club", club.clubPk )}>{club.clubName}</RankingClubText>
             </RankingClub>
           </VContent>
         ))}

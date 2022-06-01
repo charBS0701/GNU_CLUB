@@ -7,8 +7,9 @@ import { Ionicons } from '@expo/vector-icons';
 const Main = styled.View`
   flowdirection : row;
   display: flex;
+  justify-content: center;
   align-items: flex-start;
-  margin-top: 45%;
+  margin-top: 200;
   margin-left: 50;
 `;
 
@@ -56,7 +57,7 @@ const Login = ({ navigation }) => {
 
   return (
     <Main>
-      <Text style={{fontSize: 40, marginBottom: "5%"}}>로그인</Text>
+      <Text style={{fontSize: 40, marginBottom: "5%"}}>관리자 로그인</Text>
       <View style={{flexDirection:"row", marginleft : 100}}>
       <Ionicons name="person-outline" size={40} color="black" />
       <TextInput style={{marginBottom: "4%"}} placeholder="ID" fontSize={30} onChange={(text) => setId(text)} /> 
@@ -67,16 +68,11 @@ const Login = ({ navigation }) => {
       </View>
 
       <TouchableOpacity style={{borderRadius: 10, backgroundColor: "skyblue", width: 310, height: 50, justifyContent: "center", alignItems: "center" }}  onPress={requestLogin}>
-        <Text style={{fontSize: 20, color: "white"}}>로그인</Text>
+      <Text style={{fontSize: 20, color: "white"}}>로그인</Text>
         </TouchableOpacity>
-      <TouchableOpacity style={{width: 310, height: 50, justifyContent: "center", alignItems: "center", marginBottom: "100%"}}  onPress={() => navigation.navigate("SignIn")}>
-        <Text style={{fontSize: 20}}>회원가입</Text>
-        </TouchableOpacity>
-      <TouchableOpacity style={{width: 310, height: 50, justifyContent: "flex-end", alignItems: "center" }}  onPress={() => navigation.navigate("ManagerLogin")}>
-        <Text style={{fontSize: 15}}>관리자로그인</Text>
-        </TouchableOpacity>
+
     </Main>
   );
 };
 
-export default Login;
+export default ManagerLogin;

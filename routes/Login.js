@@ -7,7 +7,7 @@ const Main = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100;
+  margin-top: 100px;
 `;
 
 const Login = ({ navigation }) => {

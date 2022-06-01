@@ -1,10 +1,12 @@
-import React from 'react';
-import {Text, ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Image, View } from 'react-native';
 import styled from 'styled-components/native';
+import axios from "axios";
 
 const Main = styled.View`
     display: flex;
     align-items: center;
+    height: 98%;
 `;
 
 const Header = styled.View`
@@ -18,13 +20,20 @@ const Header = styled.View`
 const List = styled.ScrollView`
     width: 100%;
     margin-left: 30%;
+    display: flex;
 `;
 
-const Posted = styled.View`
+const Posted = styled.TouchableOpacity`
     width: 70%;
-    height: 100px;
+    height: 50px;
     margin-top: 10%;
     border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+const Title = styled.Text`
+    font-size: 20px;
 `;
 
 const Posting = styled.Text`
@@ -35,22 +44,45 @@ const GoBack = styled.Text`
     font-size: 40px;
 `;
 
-const Notice = ({navigation}) => {
+const Notice = ({navigation, route}) => {
+    const clubPk = route.params.clubPk;
+    const member_pk = route.params.member_pk;
+    
+    const [noticeList,setNoticeList] = useState<any>();
+    const [loading,setLoading] = useState(true);
+    const callApi = async() => {
+        try{
+            const response = await axios.get(`http://15.165.169.129/api/club/${clubPk}/notices`);
+            setNoticeList(response.data.data);
+            setLoading(false);
+        }catch(error){
+            console.log(error);
+        };
+    }
+    
+    useEffect(() => {callApi()},[]);
     return (
+      <View>
+          {loading ? (<View>
+              <ActivityIndicator size="large" />
+          </View>) : (
         <Main>
             <Header>
                 <GoBack onPress={() => navigation.goBack()}>&lt;</GoBack>
-                <Posting onPress={() => navigation.navigate('Posting')}>+</Posting>
+                <Posting onPress={() => navigation.navigate('Posting',{clubPk: clubPk})}>+</Posting>
             </Header>   
             <List>
-                <Posted>
-                    <Text onPress={() => navigation.navigate('Watch')}>공지1</Text>
-                </Posted>
-                <Posted>
-                    <Text onPress={() => navigation.navigate('Watch')}>공지2</Text>
-                </Posted>
+                {noticeList.reverse().map((notice:any,index:number)=>{
+                    return(
+                    <Posted onPress={() => navigation.navigate('Watch',{noticePk: notice.noticePk})} key={index}>
+                        <Title>{notice.title}</Title>
+                    </Posted>
+                    );
+                })}
             </List>
         </Main>
+            ) }    
+        </View>
     );
 };
 

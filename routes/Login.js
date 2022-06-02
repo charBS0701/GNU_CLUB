@@ -63,11 +63,11 @@ const Login = ({ navigation }) => {
       <Text style={{fontSize: 40, marginBottom: "5%"}}>로그인</Text>
       <View style={{flexDirection:"row", marginleft : 100}}>
       <Ionicons name="person-outline" size={40} color="black" />
-      <TextInput style={{marginBottom: "4%"}} placeholder="ID" fontSize={30} onChangeText={(text) => setId(text)} /> 
+      <TextInput style={{marginBottom: "4%", width: "80%"}} placeholder="ID" fontSize={30} onChangeText={(text) => setId(text)} /> 
         </View>
       <View style={{flexDirection:"row"}}>
         <MaterialCommunityIcons name="key" size={40} color="black" />
-      <TextInput style={{marginBottom: "4%"}} placeholder="비밀번호" fontSize={30} onChangeText={(text) => setPw(text)} />
+      <TextInput style={{marginBottom: "4%", width: "80%"}} placeholder="비밀번호" fontSize={30} onChangeText={(text) => setPw(text)} />
       </View>
 
       <TouchableOpacity style={styles.buttons} onPress={requestLogin}>

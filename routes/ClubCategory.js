@@ -99,14 +99,12 @@ const ClubCategory = (props) => {
   const clickBookMark = async (club_pk) => {
     try {
       const memberPk = await AsyncStorage.getItem("pk");
-      console.log(memberPk);
-      const response = await fetch(
+      await fetch(
         `http://15.165.169.129/api/member/${memberPk}/bookmark?club_pk=${club_pk}`,
         {
           method: "PUT",
         }
       );
-      const json = await response.json();
       getUserInfo();
     } catch (error) {
       console.log("error in click book mark: " + error);

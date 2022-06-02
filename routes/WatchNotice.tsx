@@ -103,7 +103,7 @@ const WatchNotice = (noticePk:any) => {
 
     const callApi = async() => {
         try{
-            const response = await axios.get(`http://15.165.169.129/api/club/notice/${noticePk.route.params.noticePk}?member_pk=1`);
+            const response = await axios.get(`http://15.165.169.129/api/club/notice/${noticePk.route.params.noticePk}?member_pk=${noticePk.route.params.memberPk}`);
             setNotice(response.data.data);
             loadLike(response);
             setLoading(false);
@@ -113,7 +113,7 @@ const WatchNotice = (noticePk:any) => {
     }
     const updateLike = async(blike:boolean) => {
         try{
-            await axios.put(`http://15.165.169.129/api/like/notice/${noticePk.route.params.noticePk}?member_pk=1`,{
+            await axios.put(`http://15.165.169.129/api/like/notice/${noticePk.route.params.noticePk}?member_pk=${noticePk.route.params.memberPk}`,{
                 data:{
                     blike: blike,
                     likeCount: notice.likeCount,

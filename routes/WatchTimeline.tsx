@@ -103,7 +103,7 @@ const WatchTimeline = (timelinePk:any) => {
 
     const callApi = async() => {
         try{
-            const response = await axios.get(`http://15.165.169.129/api/club/timeline/${timelinePk.route.params.timelinePk}?member_pk=1`);
+            const response = await axios.get(`http://15.165.169.129/api/club/timeline/${timelinePk.route.params.timelinePk}?member_pk=${timelinePk.route.params.memberPk}`);
             setTimeline(response.data.data);
             loadLike(response);
             setLoading(false);
@@ -113,7 +113,7 @@ const WatchTimeline = (timelinePk:any) => {
     }
     const updateLike = async(blike:boolean) => {
         try{
-            await axios.put(`http://15.165.169.129/api/like/timeline/${timelinePk.route.params.timelinePk}?member_pk=1`,{
+            await axios.put(`http://15.165.169.129/api/like/timeline/${timelinePk.route.params.timelinePk}?member_pk=${timelinePk.route.params.memberPk}`,{
                 data:{
                     blike: blike,
                     likeCount: timeline.likeCount,

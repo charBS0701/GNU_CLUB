@@ -259,11 +259,11 @@ const Club = (props) => {
           <TouchableOpacity
             style={{justifyContent:"center", alignItems:"center", width: 90, height: 30, marginTop:50, backgroundColor: "skyblue", borderRadius: 40}}
             onPress={() => {
-              alert("가입이 완료되었습니다.");
+              alert( clubData.data.clubName +" 동아리에 가입 신청되었습니다.");
               setModal(!ModalVisible);
             }}
           >
-            <Text style={{color: "white"}}>가입하기</Text>
+            <Text style={{color: "white"}}>가입신청</Text>
           </TouchableOpacity>
         </View>
       </Modal>

@@ -12,8 +12,10 @@ import EditInfo from "./EditInfo";
 import WatchNotice from "./WatchNotice";
 import WatchTimeline from "./WatchTimeline";
 import ClubCategory from "./ClubCategory";
+import ManagerLogin from "./ManagerLogin ";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +37,8 @@ const Root = () => (
     <Stack.Screen name="WatchNotice" component={WatchNotice} />
     <Stack.Screen name="WatchTimeline" component={WatchTimeline} />
     <Stack.Screen name="ClubCategory" component={ClubCategory} />
+    <Stack.Screen name="ManagerLogin" component={ManagerLogin} />
+    
   </Stack.Navigator>
 );
 

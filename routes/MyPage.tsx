@@ -1,6 +1,8 @@
 import styled from "styled-components/native";
-import React from 'react';
-import {View,Text,Image} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {View,Text,Image, ScrollView, TouchableOpacity} from 'react-native';
+import { Fontisto } from '@expo/vector-icons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Profile = styled.View`
     display: flex;
@@ -21,25 +23,66 @@ const Bookmark = styled.View`
 `;
 
 const MyPage = ({navigation}) => {
+    const [userInfo, setUserInfo] = useState({
+        signInId: "",
+        joinedClub: [],
+        bookmarks: [],
+    });
+
+    const bookrmark = [
+        {bookmarkPk: 1, bookmarkName: "햇귀"},
+        {bookmarkPk: 2, bookmarkName: "기라성"},
+        {bookmarkPk: 3, bookmarkName: "소리울림"}, 
+    ];
+
+    useEffect(() => {
+        getUserInfo();
+    },[])
+
+  // 멤버의 즐겨찾기 한 동아리 가져오기
+  const getUserInfo = async () => {
+    try {
+      const memberPK = await AsyncStorage.getItem("pk");
+      const response = await fetch(
+        `http://15.165.169.129/api/member/${memberPK}/my_page`
+      );
+      const json = await response.json();
+      console.log("JSON: " + JSON.stringify(json));
+      setUserInfo(json.data);
+    } catch (error) {
+      console.log("error in get user info: " + error);
+    }
+  };
+
+  const renderJoinedClub = () => {
+      if(userInfo.joinedClub == null) {
+        return <View></View>;
+      }
+      userInfo.joinedClub.map((club, key) => {
+        return(<TouchableOpacity onPress={() => navigation.navigate("Club", {clubPk: club.joinedClubPk})} key={key}><Text>{club.joinedClubName}</Text></TouchableOpacity>)
+    })
+  }
+
     return (
         <View>
             <Profile>
-                <Image source={{uri:''}}/><Text>이름</Text><Text onPress={() => navigation.navigate('EditInfo')}>정보 수정</Text>
+                <Image source={{uri:'splash'}}/><Text><Fontisto name="person" size={24} color="black" />
+                <Text>{userInfo.signInId}</Text>
+                </Text><Text onPress={() => navigation.navigate('EditInfo')}>정보 수정</Text>
             </Profile>
             <Joined>
                 <Text>가입한 동아리</Text>
-                <View>
-                    <Text>동아리 1</Text>
-                    <Text>동아리 2</Text>
-                </View>
+                <ScrollView>
+                    {renderJoinedClub()}
+                </ScrollView>
             </Joined>
-
             <Bookmark>
                 <Text>즐겨찾기</Text>
-                <View>
-                    <Text>동아리 1</Text>
-                    <Text>동아리 2</Text>
-                </View>
+                <ScrollView>
+                    {bookrmark.map((club, key) => {
+                        return(<TouchableOpacity onPress={() => navigation.navigate("Club", {clubPk: club.bookmarkPk})} key={key}><Text>{club.bookmarkName}</Text></TouchableOpacity>)
+                    })}
+                </ScrollView>
             </Bookmark>
         </View>
     );

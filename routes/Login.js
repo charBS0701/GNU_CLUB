@@ -25,16 +25,22 @@ const Login = ({ navigation }) => {
   // 로그인 버튼 실행 함수
   const requestLogin = async () => {
     try {
-      const response = await fetch(`http://15.165.169.129/api/member/signIn`, {
-        method: "POST",
-        body: JSON.stringify({
-          signInId: id,
-          password: pw,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({
+        "signInId": id,
+        "password": pw
       });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      const response = await fetch('http://15.165.169.129/api/member/signIn', requestOptions);
       const userData = await response.json();
       console.log("user Pk: " + JSON.stringify(userData));
 
@@ -50,11 +56,11 @@ const Login = ({ navigation }) => {
       <Text style={{fontSize: 40, marginBottom: "5%"}}>로그인</Text>
       <View style={{flexDirection:"row", marginleft : 100}}>
       <Ionicons name="person-outline" size={40} color="black" />
-      <TextInput style={{marginBottom: "4%"}} placeholder="ID" fontSize={30} onChange={(text) => setId(text)} /> 
+      <TextInput style={{marginBottom: "4%"}} placeholder="ID" fontSize={30} onChangeText={(text) => setId(text)} /> 
         </View>
       <View style={{flexDirection:"row"}}>
         <MaterialCommunityIcons name="key" size={40} color="black" />
-      <TextInput style={{marginBottom: "4%"}} placeholder="비밀번호" fontSize={30} onChange={(text) => setPw(text)} />
+      <TextInput style={{marginBottom: "4%"}} placeholder="비밀번호" fontSize={30} onChangeText={(text) => setPw(text)} />
       </View>
 
       <TouchableOpacity style={{borderRadius: 10, backgroundColor: "skyblue", width: 310, height: 50, justifyContent: "center", alignItems: "center" }}  onPress={requestLogin}>

@@ -1,16 +1,15 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
-import { Text, Button, TextInput, View, TouchableOpacity } from "react-native";
+import { Text, TextInput, View, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
 
 const Main = styled.View`
-  flowdirection : row;
   display: flex;
   align-items: flex-start;
   margin-top: 45%;
-  margin-left: 50;
+  margin-left: 25px;
 `;
 
 const Login = ({ navigation }) => {

@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
-import { Text, Button, TextInput, AsyncStorage, View, TouchableOpacity } from "react-native";
+import { Text, TextInput, View, TouchableOpacity, StyleSheet} from "react-native";
 import styled from "styled-components/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
@@ -24,12 +24,19 @@ const Login = ({ navigation }) => {
 
   // 로그인 버튼 실행 함수
   const requestLogin = async () => {
+    if (id === ""){
+      return alert("ID를 입력하지 않았습니다.");
+   }
+   if (pw === ""){
+      return alert("PW를 입력하지 않았습니다.");
+   }
+   
     try {
       const response = await fetch(`http://15.165.169.129/api/member/signIn`, {
         method: "POST",
         body: JSON.stringify({
-          signInId: "byeoru",
-          password: "1234",
+          signInId: id,
+          password: pw,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -41,6 +48,7 @@ const Login = ({ navigation }) => {
       AsyncStorage.setItem("pk", userData.data.toString());
       nav(`Main`);
     } catch (error) {
+      alert("로그인 정보가 없습니다.");
       console.log("error in request login: " + error);
     }
   };
@@ -50,15 +58,15 @@ const Login = ({ navigation }) => {
       <Text style={{fontSize: 40, marginBottom: "5%"}}>로그인</Text>
       <View style={{flexDirection:"row", marginleft : 100}}>
       <Ionicons name="person-outline" size={40} color="black" />
-      <TextInput style={{marginBottom: "4%"}} placeholder="ID" fontSize={30} onChange={(text) => setId(text)} /> 
+      <TextInput style={{marginBottom: "4%"}} placeholder="ID" fontSize={30} onChangeText={(text) => setId(text)} /> 
         </View>
       <View style={{flexDirection:"row"}}>
         <MaterialCommunityIcons name="key" size={40} color="black" />
-      <TextInput style={{marginBottom: "4%"}} placeholder="비밀번호" fontSize={30} onChange={(text) => setPw(text)} />
+      <TextInput style={{marginBottom: "4%"}} placeholder="비밀번호" fontSize={30} onChangeText={(text) => setPw(text)} />
       </View>
 
-      <TouchableOpacity style={{borderRadius: 10, backgroundColor: "skyblue", width: 310, height: 50, justifyContent: "center", alignItems: "center" }}  onPress={requestLogin}>
-        <Text style={{fontSize: 20, color: "white"}}>로그인</Text>
+      <TouchableOpacity style={styles.buttons} onPress={requestLogin}>
+            <Text style={{fontSize: 20, color: "white"}}>로그인</Text>
         </TouchableOpacity>
       <TouchableOpacity style={{width: 310, height: 50, justifyContent: "center", alignItems: "center", marginBottom: "100%"}}  onPress={() => navigation.navigate("SignIn")}>
         <Text style={{fontSize: 20}}>회원가입</Text>
@@ -69,5 +77,18 @@ const Login = ({ navigation }) => {
     </Main>
   );
 };
+
+const styles = StyleSheet.create({
+  signText: {
+      fontSize: 40,
+      marginBottom: "5%"
+  },
+  buttons: {
+      borderRadius: 10, backgroundColor: "skyblue", width: 310, height: 50, justifyContent: "center", alignItems: "center" 
+  },
+  flowDirection: {
+      flexDirection: "row"
+  }
+})
 
 export default Login;

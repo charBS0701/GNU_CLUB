@@ -71,7 +71,7 @@ const TimelinePosting = (clubPk:any) => {
             formData.append('dto', {'string': JSON.stringify({title, content}), type: 'application/json'});
             await axios({
                 method: 'post',
-                url: `http://15.165.169.129/api/club/${clubPk.route.params.clubPk}/bulletin_board/ti meline`,
+                url: `http://15.165.169.129/api/club/${clubPk.route.params.clubPk}/bulletin_board/timeline`,
                 data: formData,
                 headers: {
                     'Content-Type': 'multipart/form-data',

@@ -9,14 +9,17 @@ const Title = styled.Text`
     margin-top: 15%;
     margin-left: 8%;
     font-size: 30px;
+    font-weight: 600;
 `;
 
 const Time = styled.Text`
     margin-left: 10%;
+    color: rgba(0,0,0,0.5);
 `;
 
 const Detail = styled.Text`
     margin: 10%;
+    font-size: 20px;
 `;
 
 const Counting = styled.View`
@@ -42,7 +45,7 @@ const CommentList = styled.View`
 const Comment = styled.View`
     display: flex;
     flex-direction: row;
-    border: 1px solid black;
+    border: 1px solid rgba(0,0,0,0.3);
     border-radius: 20px;
     margin-bottom: 10%;
     padding: 2%;
@@ -85,36 +88,35 @@ const Del = styled.Text`
     font-weight: 900;
 `
 
-const Watch = (noticePk:any) => {
-    const [notice,setNotice] = useState<any>();
+const WatchTimeline = (timelinePk:any) => {
+    const [timeline,setTimeline] = useState<any>();
     const [loading,setLoading] = useState(true);
     const [like,setLike] = useState(false);
     const [comment,setComment] = useState('');
     const saveLike = async (like:any) => {
-        await AsyncStorage.setItem(`${noticePk.route.params.noticePk}`, JSON.stringify(like));
+        await AsyncStorage.setItem(`${timelinePk.route.params.timelinePk}`, JSON.stringify(like));
       };
     const loadLike = async (response:any) => {
-        await AsyncStorage.getItem(`${noticePk.route.params.noticePk}`);
+        await AsyncStorage.getItem(`${timelinePk.route.params.timelinePk}`);
         setLike(response.data.data.blike);
       };
 
     const callApi = async() => {
         try{
-            const response = await axios.get(`http://15.165.169.129/api/club/notice/${noticePk.route.params.noticePk}?member_pk=1`);
-            setNotice(response.data.data);
+            const response = await axios.get(`http://15.165.169.129/api/club/timeline/${timelinePk.route.params.timelinePk}?member_pk=1`);
+            setTimeline(response.data.data);
             loadLike(response);
             setLoading(false);
-            
             }catch(error){
                 console.log(error);
             };
     }
     const updateLike = async(blike:boolean) => {
         try{
-            await axios.put(`http://15.165.169.129/api/like/notice/${noticePk.route.params.noticePk}?member_pk=1`,{
+            await axios.put(`http://15.165.169.129/api/like/timeline/${timelinePk.route.params.timelinePk}?member_pk=1`,{
                 data:{
                     blike: blike,
-                    likeCount: notice.likeCount,
+                    likeCount: timeline.likeCount,
                 }
             });
         }catch(error){
@@ -124,8 +126,8 @@ const Watch = (noticePk:any) => {
     const commentPost = async() => {
         try{
             const formData = new FormData();
-            formData.append('comment',comment);
-            const response = await axios.post(`15.165.169.129/api/comment/notice?member_pk=${noticePk.route.params.memberPk}&notice_pk=${noticePk.route.params.noticePk}`,
+            formData.append('comment', comment);
+            const response = await axios.post(`15.165.169.129/api/comment/timeline?member_pk=${timelinePk.route.params.memberPk}&timeline_pk=${timelinePk.route.params.timelinePk}`,
             formData,{
                 headers:{
                 'Content-Type': 'application/json',
@@ -144,24 +146,24 @@ const Watch = (noticePk:any) => {
                 <ActivityIndicator size="large" />
             </View>) : (
                 <View>
-                <Title>{notice.title}</Title>
-                <Time>{notice.postingTime}</Time>
-                <Detail>{notice.content}</Detail>
-                <Image source={{uri:`${notice.imageUrl}`}}/>
+                <Title>{timeline.title}</Title>
+                <Time>{timeline.postingTime}</Time>
+                <Detail>{timeline.content}</Detail>
+                <Image source={{uri:`${timeline.imageUrl}`}}/>
                 <Counting>
                     <Like onPress={() => {
                         setLike(!like);
-                        notice.blike = like;
-                        if(notice.blike == true){
-                            notice.likeCount = notice.likeCount - 1;
-                            if(notice.likeCount<0){
-                                notice.likeCount = 0;
+                        timeline.blike = like;
+                        if(timeline.blike == true){
+                            timeline.likeCount = timeline.likeCount - 1;
+                            if(timeline.likeCount<0){
+                                timeline.likeCount = 0;
                             }
                         }else{
-                            notice.likeCount = notice.likeCount + 1;
+                            timeline.likeCount = timeline.likeCount + 1;
                         }
-                        updateLike(notice.blike);
-                        saveLike(notice.blike);
+                        updateLike(timeline.blike);
+                        saveLike(timeline.blike);
                         }}
                         >
                         {like ? (
@@ -170,7 +172,7 @@ const Watch = (noticePk:any) => {
                         <AntDesign name="hearto" size={24} color="red" />
                         )}
                     </Like>
-                    <Text> {notice.likeCount} </Text>
+                    <Text> {timeline.likeCount} </Text>
                 </Counting>
         
                 <AddComment>
@@ -193,13 +195,13 @@ const Watch = (noticePk:any) => {
                 </AddComment>
         
                 <CommentList>
-                    {notice.comments.map((comment:any,index:number)=>{
+                    {timeline.comments.map((comment:any,index:number)=>{
                     return(
                     <Comment key={index}>
                         <Image source={{ uri: null }} style={{ width: 40, height: 40 }} />
                         <Content>
-                            <Id>{notice.comments[index].userId}</Id>
-                            <CommentDetail>{notice.comments[index].comment}</CommentDetail>
+                            <Id>{timeline.comments[index].userId}</Id>
+                            <CommentDetail>{timeline.comments[index].comment}</CommentDetail>
                         </Content>
                         <DelBtn>
                             <Del>X</Del>
@@ -215,4 +217,4 @@ const Watch = (noticePk:any) => {
     );
 };
 
-export default Watch;
+export default WatchTimeline;

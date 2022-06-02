@@ -17,6 +17,17 @@ const Time = styled.Text`
     color: rgba(0,0,0,0.5);
 `;
 
+const DelPost = styled.TouchableOpacity`
+    position: absolute;
+    left: 75%;
+    top: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 40px;
+`;
+
 const Detail = styled.Text`
     margin: 10%;
     font-size: 20px;
@@ -148,6 +159,9 @@ const WatchNotice = (noticePk:any) => {
                 <View>
                 <Title>{notice.title}</Title>
                 <Time>{notice.postingTime}</Time>
+                <DelPost>
+                    <Text>글 삭제</Text>
+                </DelPost>
                 <Detail>{notice.content}</Detail>
                 <Image source={{uri:`${notice.imageUrl}`}}/>
                 <Counting>
@@ -203,6 +217,7 @@ const WatchNotice = (noticePk:any) => {
                             <Id>{notice.comments[index].userId}</Id>
                             <CommentDetail>{notice.comments[index].comment}</CommentDetail>
                         </Content>
+                        
                         <DelBtn>
                             <Del>X</Del>
                         </DelBtn>

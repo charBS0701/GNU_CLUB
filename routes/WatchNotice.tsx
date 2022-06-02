@@ -150,6 +150,14 @@ const WatchNotice = (noticePk:any) => {
             console.log(error.response.data);
         }
     }
+    const DeletePost = async() => {
+        try{
+            const response = await axios.delete(`15.165.169.129/api/club/bulletin_board/notice/${noticePk.route.params.noticePk}`);
+            console.log(response);
+        }catch(error){
+            console.log(error.response.data);
+        }
+    }
     useEffect(() => {callApi()},[]);
     return (
         <View>
@@ -160,7 +168,7 @@ const WatchNotice = (noticePk:any) => {
                 <Title>{notice.title}</Title>
                 <Time>{notice.postingTime}</Time>
                 <DelPost>
-                    <Text>글 삭제</Text>
+                    <Text onPress={()=>DeletePost()}>글 삭제</Text>
                 </DelPost>
                 <Detail>{notice.content}</Detail>
                 <Image source={{uri:`${notice.imageUrl}`}}/>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, RefreshControl, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 
@@ -25,15 +25,16 @@ const List = styled.ScrollView`
 
 const Posted = styled.TouchableOpacity`
     width: 70%;
-    height: 50px;
-    margin-top: 10%;
-    border: 1px solid black;
+    height: 60px;
+    margin-top: 8%;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
 `;
 const Title = styled.Text`
-    font-size: 20px;
+    font-size: 25px;
 `;
 
 const Posting = styled.Text`

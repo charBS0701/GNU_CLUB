@@ -4,7 +4,6 @@ import styled from 'styled-components/native';
 import axios from "axios";
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { time } from 'console';
 
 const Title = styled.Text`
     margin-top: 15%;
@@ -27,6 +26,8 @@ const DelPost = styled.TouchableOpacity`
     align-items: center;
     width: 60px;
     height: 40px;
+    border: 2px solid rgba(0,0,0,0.7);
+    border-radius: 20px;
 `;
 
 const Detail = styled.Text`
@@ -37,29 +38,29 @@ const Detail = styled.Text`
 const Counting = styled.View`
     display: flex;
     flex-direction: row;
-    padding: 8%;
+    padding-left: 10%;
 `;
 
 const AddComment = styled.View`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 10%;
+    padding: 5% 10%;
 `;
 const CommentInput = styled.View`
-    border: 1px black solid;
+    border: 1px solid rgba(0,0,0,0.7);
     width: 80%;
 `;
 
 const CommentList = styled.View`
-    padding: 10%;
+    padding: 5% 10%;
 `;
 const Comment = styled.View`
     display: flex;
     flex-direction: row;
-    border: 1px solid rgba(0,0,0,0.3);
+    border: 2px solid rgba(0,0,0,0.3);
     border-radius: 20px;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
     padding: 2%;
 `;
 
@@ -88,6 +89,7 @@ const DelBtn = styled.TouchableOpacity`
     top: 10%;
     width: 30px;
     height: 30px;
+    border-radius: 15px;
     background-color: red;
     display: flex;
     justify-content: center;

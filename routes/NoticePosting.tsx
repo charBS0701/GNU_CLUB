@@ -51,9 +51,9 @@ const BtnText = styled.Text`
 `;
 
 const NoticePosting = (clubPk:any) => {
-    let title;
-    let content;
     const [image, setImage] = useState();
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
     const [titleLen,setTitleLen] = useState(0);
     const [contentLen,setContentLen] = useState(0);
   const pickImage = async () => {
@@ -96,8 +96,9 @@ const NoticePosting = (clubPk:any) => {
                 placeholder='title' 
                 maxLength={100} 
                 onChangeText={(event) => {
-                    title = event;
+                    setTitle(event);
                     setTitleLen(title.length);
+
                 }}/>
             </Title>
             <Detail>
@@ -106,7 +107,7 @@ const NoticePosting = (clubPk:any) => {
                 maxLength={5000}
                 multiline={true}
                 onChangeText={(event) => {
-                    content = event;
+                    setContent(event);
                     setContentLen(content.length);
                 }}/>
             </Detail>

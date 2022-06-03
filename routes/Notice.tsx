@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, View } from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 
@@ -47,9 +47,9 @@ const GoBack = styled.Text`
 const Notice = ({navigation, route}) => {
     const clubPk = route.params.clubPk;
     const member_pk = route.params.member_pk;
-    
     const [noticeList,setNoticeList] = useState<any>();
     const [loading,setLoading] = useState(true);
+    
     const callApi = async() => {
         try{
             const response = await axios.get(`http://15.165.169.129/api/club/${clubPk}/notices`);
@@ -60,7 +60,7 @@ const Notice = ({navigation, route}) => {
         };
     }
     
-    useEffect(() => {callApi()},[]);
+    useEffect(() => {callApi()},[noticeList]);
     return (
       <View>
           {loading ? (<View>

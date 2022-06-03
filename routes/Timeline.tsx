@@ -60,7 +60,7 @@ const Timeline = ({navigation, route}) => {
         };
     }
     
-    useEffect(() => {callApi()},[]);
+    useEffect(() => {callApi()},[timelineList]);
     return (
       <View>
           {loading ? (<View>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View,Text,Image, Button, TextInput, ActivityIndicator} from 'react-native';
+import {View,Text,Image, Button, TextInput, ActivityIndicator, ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 import { AntDesign } from '@expo/vector-icons';
@@ -178,7 +178,7 @@ const WatchNotice = (noticePk:any) => {
             {loading ? (<View>
                 <ActivityIndicator size="large" />
             </View>) : (
-                <View>
+                <ScrollView>
                 <Title>{notice.title}</Title>
                 <Time>{notice.postingTime}</Time>
                 <DelPost>
@@ -247,7 +247,7 @@ const WatchNotice = (noticePk:any) => {
                     );
                 })}
                 </CommentList> 
-                </View>
+                </ScrollView>
             ) }    
         </View>
         

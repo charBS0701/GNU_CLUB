@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View,Text,Image, Button, TextInput, ActivityIndicator} from 'react-native';
+import {View,Text,Image, Button, TextInput, ActivityIndicator, ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 import { AntDesign } from '@expo/vector-icons';
@@ -176,7 +176,7 @@ const WatchTimeline = (timelinePk:any) => {
             {loading ? (<View>
                 <ActivityIndicator size="large" />
             </View>) : (
-                <View>
+                <ScrollView>
                 <Title>{timeline.title}</Title>
                 <Time>{timeline.postingTime}</Time>
                 <DelPost>
@@ -244,7 +244,7 @@ const WatchTimeline = (timelinePk:any) => {
                     );
                 })}
                 </CommentList> 
-                </View>
+                </ScrollView>
             ) }    
         </View>
         

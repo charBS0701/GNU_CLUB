@@ -58,7 +58,7 @@ const ClubList = ({ navigation }) => {
     getCategoryList();
     getUserDate();
   }, []);
-
+  
   return (
     <Container>
       {categoryList.map((category, key) => {
@@ -69,6 +69,7 @@ const ClubList = ({ navigation }) => {
                   navigation.navigate("ClubCategory", {
                     categoryName: category.categoryName,
                     categoryPk: category.categoryPk,
+
                   })
                 }
               >

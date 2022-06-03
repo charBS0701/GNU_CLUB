@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 import axios from "axios";
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { time } from 'console';
 
 const Title = styled.Text`
     margin-top: 15%;
@@ -15,6 +16,17 @@ const Title = styled.Text`
 const Time = styled.Text`
     margin-left: 10%;
     color: rgba(0,0,0,0.5);
+`;
+
+const DelPost = styled.TouchableOpacity`
+    position: absolute;
+    left: 75%;
+    top: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 40px;
 `;
 
 const Detail = styled.Text`
@@ -147,7 +159,16 @@ const WatchTimeline = (timelinePk:any) => {
             console.log(error.response.data);
         }
     }
-    useEffect(() => {callApi()},[timeline.comments]);
+    const DeletePost = async() => {
+        try{
+            await axios.delete(`http://15.165.169.129/api/club/bulletin_board/timeline/${timelinePk.route.params.timelinePk}`);
+            alert("글이 삭제되었습니다");
+            timelinePk.navigation.goBack();
+        }catch(error){
+            console.log(error.response.data);
+        }
+    }
+    useEffect(() => {callApi()},[timeline]);
     return (
         <View>
             {loading ? (<View>
@@ -156,6 +177,9 @@ const WatchTimeline = (timelinePk:any) => {
                 <View>
                 <Title>{timeline.title}</Title>
                 <Time>{timeline.postingTime}</Time>
+                <DelPost>
+                    <Text onPress={()=>DeletePost()}>글 삭제</Text>
+                </DelPost>
                 <Detail>{timeline.content}</Detail>
                 <Image source={{uri:`${timeline.imageUrl}`}}/>
                 <Counting>

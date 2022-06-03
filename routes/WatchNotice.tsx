@@ -167,7 +167,7 @@ const WatchNotice = (noticePk:any) => {
             console.log(error.response.data);
         }
     }
-    useEffect(() => {callApi()},[notice.comments]);
+    useEffect(() => {callApi()},[notice]);
     
     
     return (

@@ -45,7 +45,7 @@ const SignIn = ({navigation}) => {
                     "signInId": id,
                     "password": pw
                 })                
-            })
+            });
             
             const json = await response.json();
             if(json.data === null) {

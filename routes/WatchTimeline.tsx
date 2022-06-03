@@ -125,21 +125,29 @@ const WatchTimeline = (timelinePk:any) => {
     }
     const commentPost = async() => {
         try{
-            const formData = new FormData();
-            formData.append('comment', comment);
-            const response = await axios.post(`15.165.169.129/api/comment/timeline?member_pk=${timelinePk.route.params.memberPk}&timeline_pk=${timelinePk.route.params.timelinePk}`,
-            formData,{
-                headers:{
-                'Content-Type': 'application/json',
-                }
-            }
-            );
+            const response = await fetch(`http://15.165.169.129/api/comment/timeline?member_pk=${timelinePk.route.params.memberPk}&timeline_pk=${timelinePk.route.params.timelinePk}`, {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "comment": comment,
+            })                
+        });
             console.log(response);
         }catch(error){
             console.log(error.response.data);
         }
     }
-    useEffect(() => {callApi()},[]);
+    const DeleteComment = async(commentPk) => {
+        try{
+            await axios.delete(`http://15.165.169.129/api/comment/${commentPk}`);
+            alert("댓글이 삭제되었습니다");
+        }catch(error){
+            console.log(error.response.data);
+        }
+    }
+    useEffect(() => {callApi()},[timeline.comments]);
     return (
         <View>
             {loading ? (<View>
@@ -203,7 +211,7 @@ const WatchTimeline = (timelinePk:any) => {
                             <Id>{timeline.comments[index].userId}</Id>
                             <CommentDetail>{timeline.comments[index].comment}</CommentDetail>
                         </Content>
-                        <DelBtn>
+                        <DelBtn onPress={()=>DeleteComment(timeline.comments[index].commentPk)}>
                             <Del>X</Del>
                         </DelBtn>
                     </Comment>

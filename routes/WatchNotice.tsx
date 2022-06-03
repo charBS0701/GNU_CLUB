@@ -136,29 +136,40 @@ const WatchNotice = (noticePk:any) => {
     }
     const commentPost = async() => {
         try{
-            const formData = new FormData();
-            formData.append('comment', comment);
-            const response = await axios.post(`15.165.169.129/api/comment/notice?member_pk=${noticePk.route.params.memberPk}&notice_pk=${noticePk.route.params.noticePk}`,
-            formData,{
-                headers:{
-                'Content-Type': 'application/json',
-                }
-            }
-            );
+            const response = await fetch(`http://15.165.169.129/api/comment/notice?member_pk=${noticePk.route.params.memberPk}&notice_pk=${noticePk.route.params.noticePk}`, {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "comment": comment,
+            })                
+        });
             console.log(response);
+        }catch(error){
+            console.log(error.response.data);
+        }
+    }
+    const DeleteComment = async(commentPk) => {
+        try{
+            await axios.delete(`http://15.165.169.129/api/comment/${commentPk}`);
+            alert("댓글이 삭제되었습니다");
         }catch(error){
             console.log(error.response.data);
         }
     }
     const DeletePost = async() => {
         try{
-            const response = await axios.delete(`15.165.169.129/api/club/bulletin_board/notice/${noticePk.route.params.noticePk}`);
-            console.log(response);
+            await axios.delete(`http://15.165.169.129/api/club/bulletin_board/notice/${noticePk.route.params.noticePk}`);
+            alert("글이 삭제되었습니다");
+            noticePk.navigation.goBack();
         }catch(error){
             console.log(error.response.data);
         }
     }
-    useEffect(() => {callApi()},[]);
+    useEffect(() => {callApi()},[notice.comments]);
+    
+    
     return (
         <View>
             {loading ? (<View>
@@ -226,7 +237,7 @@ const WatchNotice = (noticePk:any) => {
                             <CommentDetail>{notice.comments[index].comment}</CommentDetail>
                         </Content>
                         
-                        <DelBtn>
+                        <DelBtn onPress={()=>DeleteComment(notice.comments[index].commentPk)}>
                             <Del>X</Del>
                         </DelBtn>
                     </Comment>

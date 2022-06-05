@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
 import Modal from "react-native-modal";
 import styled from "styled-components/native";
@@ -106,6 +106,7 @@ const Introducing = styled.View`
 const IntroducingText = styled.Text`
   font-size: 20px;
 `;
+
 const Club = (props) => {
   const [loading, setLoading] = useState(true);
   const [clubData, setClubData] = useState({
@@ -118,7 +119,6 @@ const Club = (props) => {
   const [checkIn, setCheckIn] = useState(false);
   const [ModalVisible, setModal] = useState(false);
   const clubPk = props.route.params.clubPk;
-  const member_pk = 1;
 
   //새로고침
   const [refreshing, setRefreshing] = React.useState(false);
@@ -131,14 +131,17 @@ const Club = (props) => {
   // 클럽 데이터 가져오기
   const getClubData = async () => {
     try {
+      const member_pk = await AsyncStorage.getItem("pk");
       const response = await fetch(
         `http://15.165.169.129/api/club/${clubPk}?member_pk=${member_pk}`
       );
       const thisData = await response.json();
       setClubData(thisData);
+      console.log(clubData);
     } catch (error) {
       console.log("error in get Club data: " + error);
     }
+    
   };
 
   // 화면 들어올 때 실행

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View,Text,Image, Button, TextInput, ActivityIndicator} from 'react-native';
+import {View,Text,Image, Button, TextInput, ActivityIndicator, ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 import { AntDesign } from '@expo/vector-icons';
@@ -9,39 +9,58 @@ const Title = styled.Text`
     margin-top: 15%;
     margin-left: 8%;
     font-size: 30px;
+    font-weight: 600;
 `;
 
 const Time = styled.Text`
     margin-left: 10%;
+    color: rgba(0,0,0,0.5);
+`;
+
+const DelPost = styled.TouchableOpacity`
+    position: absolute;
+    left: 75%;
+    top: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 40px;
+    border: 2px solid rgba(0,0,0,0.7);
+    border-radius: 20px;
 `;
 
 const Detail = styled.Text`
     margin: 10%;
+    font-size: 20px;
 `;
 
 const Counting = styled.View`
     display: flex;
     flex-direction: row;
-    padding: 8%;
+    padding-left: 10%;
 `;
 
 const AddComment = styled.View`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 10%;
+    padding: 5% 10%;
 `;
 const CommentInput = styled.View`
-    border: 1px black solid;
+    border: 1px solid rgba(0,0,0,0.7);
     width: 80%;
 `;
 
 const CommentList = styled.View`
-    padding: 10%;
+    padding: 5% 10%;
 `;
 const Comment = styled.View`
-    border: 1px solid black;
-    margin-bottom: 10%;
+    display: flex;
+    flex-direction: row;
+    border: 2px solid rgba(0,0,0,0.3);
+    border-radius: 20px;
+    margin-bottom: 5%;
     padding: 2%;
 `;
 
@@ -50,7 +69,40 @@ const Like = styled.TouchableOpacity`
     justify-content: center;
 `;
 
-const Watch = (noticePk:any) => {
+const Content = styled.View`
+    position: relative;
+`;
+
+const Id = styled.Text`
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 600;
+`;
+
+const CommentDetail = styled.Text`
+    font-size: 15px;
+`;
+
+const DelBtn = styled.TouchableOpacity`
+    position: absolute;
+    left: 90%;
+    top: 10%;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const Del = styled.Text`
+    color: white;
+    font-size: 20px;
+    font-weight: 900;
+`
+
+const WatchNotice = (noticePk:any) => {
     const [notice,setNotice] = useState<any>();
     const [loading,setLoading] = useState(true);
     const [like,setLike] = useState(false);
@@ -58,25 +110,24 @@ const Watch = (noticePk:any) => {
     const saveLike = async (like:any) => {
         await AsyncStorage.setItem(`${noticePk.route.params.noticePk}`, JSON.stringify(like));
       };
-    const loadLike = async (response) => {
+    const loadLike = async (response:any) => {
         await AsyncStorage.getItem(`${noticePk.route.params.noticePk}`);
         setLike(response.data.data.blike);
       };
 
     const callApi = async() => {
         try{
-            const response = await axios.get(`http://15.165.169.129/api/club/notice/${noticePk.route.params.noticePk}?member_pk=1`);
+            const response = await axios.get(`http://15.165.169.129/api/club/notice/${noticePk.route.params.noticePk}?member_pk=${noticePk.route.params.memberPk}`);
             setNotice(response.data.data);
             loadLike(response);
             setLoading(false);
-            
             }catch(error){
                 console.log(error);
             };
     }
     const updateLike = async(blike:boolean) => {
         try{
-            await axios.put(`http://15.165.169.129/api/like/notice/${noticePk.route.params.noticePk}?member_pk=1`,{
+            await axios.put(`http://15.165.169.129/api/like/notice/${noticePk.route.params.noticePk}?member_pk=${noticePk.route.params.memberPk}`,{
                 data:{
                     blike: blike,
                     likeCount: notice.likeCount,
@@ -88,29 +139,51 @@ const Watch = (noticePk:any) => {
     }
     const commentPost = async() => {
         try{
-            let data={
-                comment,
-            }
-            const response = await axios.post(`15.165.169.129/api/comment/notice?member_pk=1&notice_pk=${noticePk.route.params.noticePk}`,
-            JSON.stringify(data),{
-                headers: {
-                'Content-Type': 'application/json'
-            }}
-            );
+            const response = await fetch(`http://15.165.169.129/api/comment/notice?member_pk=${noticePk.route.params.memberPk}&notice_pk=${noticePk.route.params.noticePk}`, {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "comment": comment,
+            })                
+        });
             console.log(response);
         }catch(error){
             console.log(error.response.data);
         }
     }
-    useEffect(() => {callApi()},[]);
+    const DeleteComment = async(commentPk) => {
+        try{
+            await axios.delete(`http://15.165.169.129/api/comment/${commentPk}`);
+            alert("댓글이 삭제되었습니다");
+        }catch(error){
+            console.log(error.response.data);
+        }
+    }
+    const DeletePost = async() => {
+        try{
+            await axios.delete(`http://15.165.169.129/api/club/bulletin_board/notice/${noticePk.route.params.noticePk}`);
+            alert("글이 삭제되었습니다");
+            noticePk.navigation.goBack();
+        }catch(error){
+            console.log(error.response.data);
+        }
+    }
+    useEffect(() => {callApi()},[notice]);
+    
+    
     return (
         <View>
             {loading ? (<View>
                 <ActivityIndicator size="large" />
             </View>) : (
-                <View>
+                <ScrollView>
                 <Title>{notice.title}</Title>
                 <Time>{notice.postingTime}</Time>
+                <DelPost>
+                    <Text onPress={()=>DeletePost()}>글 삭제</Text>
+                </DelPost>
                 <Detail>{notice.content}</Detail>
                 <Image source={{uri:`${notice.imageUrl}`}}/>
                 <Counting>
@@ -158,23 +231,27 @@ const Watch = (noticePk:any) => {
                 </AddComment>
         
                 <CommentList>
-                    <Comment>
-                        <Text>1</Text>
-                    </Comment>
                     {notice.comments.map((comment:any,index:number)=>{
                     return(
                     <Comment key={index}>
-                        <Image source={{ uri: '' }} style={{ width: 30, height: 30 }} />
-                        <Title>{comment}</Title>
+                        <Image source={{ uri: null }} style={{ width: 40, height: 40 }} />
+                        <Content>
+                            <Id>{notice.comments[index].userId}</Id>
+                            <CommentDetail>{notice.comments[index].comment}</CommentDetail>
+                        </Content>
+                        
+                        <DelBtn onPress={()=>DeleteComment(notice.comments[index].commentPk)}>
+                            <Del>X</Del>
+                        </DelBtn>
                     </Comment>
                     );
                 })}
                 </CommentList> 
-                </View>
+                </ScrollView>
             ) }    
         </View>
         
     );
 };
 
-export default Watch;
+export default WatchNotice;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, TextInput, Button, Image} from 'react-native';
+import {View, TextInput, Text, Image} from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 import * as ImagePicker from 'expo-image-picker';
@@ -31,13 +31,31 @@ const PostButton = styled.View`
     display: flex;
     align-items: flex-end;
     padding: 10%;
+    
 `;
 
-const Posting = (clubPk:any) => {
-    let title;
-    let content;
-    const [image, setImage] = useState();
+const Btn = styled.TouchableOpacity`
+    padding: 2% 13%;
+    border-radius: 5px;
+    background-color: #0d6efd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    width: 150px;
+`;
 
+const BtnText = styled.Text`
+    color: white;
+    font-size: 15px;
+`;
+
+const NoticePosting = (clubPk:any) => {
+    const [image, setImage] = useState();
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [titleLen,setTitleLen] = useState(0);
+    const [contentLen,setContentLen] = useState(0);
   const pickImage = async () => {
     let result:any = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -78,7 +96,9 @@ const Posting = (clubPk:any) => {
                 placeholder='title' 
                 maxLength={100} 
                 onChangeText={(event) => {
-                    title = event;
+                    setTitle(event);
+                    setTitleLen(title.length);
+
                 }}/>
             </Title>
             <Detail>
@@ -87,18 +107,30 @@ const Posting = (clubPk:any) => {
                 maxLength={5000}
                 multiline={true}
                 onChangeText={(event) => {
-                    content = event;
+                    setContent(event);
+                    setContentLen(content.length);
                 }}/>
             </Detail>
             <Images>
                 <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />
-                <Button title='사진 불러오기' onPress={() => pickImage()}/> 
+                <Btn onPress={() => pickImage()}>
+                    <BtnText>사진 불러오기</BtnText>
+                </Btn>
             </Images>
             <PostButton>
-                <Button title='게시' onPress={() => post()} />
+                <Btn onPress={() => {
+                    if(titleLen == 0 || contentLen == 0){
+                        alert("제목, 내용을 입력해주세요");
+                    }else{
+                        post();
+                    }
+                }
+                }>
+                    <BtnText>게시</BtnText>
+                </Btn>
             </PostButton>
         </View>
     );
 };
 
-export default Posting;
+export default NoticePosting;

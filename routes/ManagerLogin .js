@@ -6,13 +6,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
 const Main = styled.View`
+  flowdirection : row;
   display: flex;
   align-items: flex-start;
   margin-top: 45%;
-  margin-left: 25px;
+  margin-left: 50;
 `;
 
-const Login = ({ navigation }) => {
+const ManagerLogin = ({ navigation }) => {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
 
@@ -22,7 +23,7 @@ const Login = ({ navigation }) => {
   };
 
   // 로그인 버튼 실행 함수
-  const requestLogin = async () => {
+  const requestManagerLogin = async () => {
     if (id === ""){
       return alert("ID를 입력하지 않았습니다.");
    }
@@ -31,22 +32,16 @@ const Login = ({ navigation }) => {
    }
    
     try {
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
-      var raw = JSON.stringify({
-        "signInId": id,
-        "password": pw
+      const response = await fetch(`http://15.165.169.129/api/manager/signIn`, {
+        method: "POST",
+        body: JSON.stringify({
+          signInId: id,
+          password: pw,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-      };
-
-      const response = await fetch('http://15.165.169.129/api/member/signIn', requestOptions);
       const userData = await response.json();
       console.log("user Pk: " + JSON.stringify(userData));
 
@@ -60,24 +55,18 @@ const Login = ({ navigation }) => {
 
   return (
     <Main>
-      <Text style={{fontSize: 40, marginBottom: "5%"}}>로그인</Text>
+      <Text style={{fontSize: 40, marginBottom: "5%"}}> 관리자 로그인</Text>
       <View style={{flexDirection:"row", marginleft : 100}}>
       <Ionicons name="person-outline" size={40} color="black" />
-      <TextInput style={{marginBottom: "4%", width: "80%"}} placeholder="ID" fontSize={30} onChangeText={(text) => setId(text)} /> 
+      <TextInput style={{marginBottom: "4%"}} placeholder="ID" fontSize={30} onChangeText={(text) => setId(text)} /> 
         </View>
       <View style={{flexDirection:"row"}}>
         <MaterialCommunityIcons name="key" size={40} color="black" />
-      <TextInput style={{marginBottom: "4%", width: "80%"}} placeholder="비밀번호" fontSize={30} onChangeText={(text) => setPw(text)} />
+      <TextInput style={{marginBottom: "4%"}} placeholder="비밀번호" fontSize={30} onChangeText={(text) => setPw(text)} />
       </View>
 
-      <TouchableOpacity style={styles.buttons} onPress={requestLogin}>
+      <TouchableOpacity style={styles.buttons} onPress={requestManagerLogin}>
             <Text style={{fontSize: 20, color: "white"}}>로그인</Text>
-        </TouchableOpacity>
-      <TouchableOpacity style={{width: 310, height: 50, justifyContent: "center", alignItems: "center", marginBottom: "100%"}}  onPress={() => navigation.navigate("SignIn")}>
-        <Text style={{fontSize: 20}}>회원가입</Text>
-        </TouchableOpacity>
-      <TouchableOpacity style={{width: 310, height: 50, justifyContent: "flex-end", alignItems: "center" }}  onPress={() => navigation.navigate("ManagerLogin")}>
-        <Text style={{fontSize: 15}}>관리자로그인</Text>
         </TouchableOpacity>
     </Main>
   );
@@ -96,4 +85,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Login;
+export default ManagerLogin;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Image, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import styled from 'styled-components/native';
 import axios from "axios";
 
@@ -25,15 +25,16 @@ const List = styled.ScrollView`
 
 const Posted = styled.TouchableOpacity`
     width: 70%;
-    height: 50px;
-    margin-top: 10%;
-    border: 1px solid black;
+    height: 60px;
+    margin-top: 8%;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
 `;
 const Title = styled.Text`
-    font-size: 20px;
+    font-size: 25px;
 `;
 
 const Posting = styled.Text`
@@ -47,9 +48,9 @@ const GoBack = styled.Text`
 const Notice = ({navigation, route}) => {
     const clubPk = route.params.clubPk;
     const member_pk = route.params.member_pk;
-    
     const [noticeList,setNoticeList] = useState<any>();
     const [loading,setLoading] = useState(true);
+    
     const callApi = async() => {
         try{
             const response = await axios.get(`http://15.165.169.129/api/club/${clubPk}/notices`);
@@ -60,7 +61,7 @@ const Notice = ({navigation, route}) => {
         };
     }
     
-    useEffect(() => {callApi()},[]);
+    useEffect(() => {callApi()},[noticeList]);
     return (
       <View>
           {loading ? (<View>
@@ -69,12 +70,12 @@ const Notice = ({navigation, route}) => {
         <Main>
             <Header>
                 <GoBack onPress={() => navigation.goBack()}>&lt;</GoBack>
-                <Posting onPress={() => navigation.navigate('Posting',{clubPk: clubPk})}>+</Posting>
+                <Posting onPress={() => navigation.navigate('NoticePosting',{clubPk: clubPk})}>+</Posting>
             </Header>   
             <List>
                 {noticeList.reverse().map((notice:any,index:number)=>{
                     return(
-                    <Posted onPress={() => navigation.navigate('Watch',{noticePk: notice.noticePk})} key={index}>
+                    <Posted onPress={() => navigation.navigate('WatchNotice',{noticePk: notice.noticePk, memberPk: member_pk})} key={index}>
                         <Title>{notice.title}</Title>
                     </Posted>
                     );
